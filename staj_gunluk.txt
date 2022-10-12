@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 bat
 =======
 batuss
+>>>>>>> batuhan
+=======
+branch deneme
 >>>>>>> batuhan
