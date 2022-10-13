@@ -24,6 +24,7 @@ public class Account {
 		if (amount <= 0.)
 			return false;
 		this.balance = this.balance + amount;
+		System.out.println("Hesabınıza " +amount+ " tutarında para yatırıldı. Yeni bakiyeniz " + this.balance);
 		return true;
 	}
 
@@ -35,6 +36,7 @@ public class Account {
 			return false;
 		}
 		this.balance = this.balance - amount;
+		System.out.println("Hesabınızdan " +amount+ " tutarında para çekildi. Yeni bakiyeniz " + this.balance);
 		return true;
 	}
 

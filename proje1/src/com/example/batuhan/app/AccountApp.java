@@ -10,13 +10,8 @@ public class AccountApp {
 		Account acc;
 		acc = new Account("TR1", 100000);
 		
-		System.out.println("Balance: " + acc.getBalance());
-		
-		acc.withdraw(150000);
-
-		System.out.println("Balance: " + acc.getBalance());
+		acc.withdraw(10000);
 		acc.deposit(32500);
-		System.out.println("Balance: " + acc.getBalance());
 		System.out.println(acc.toString());
 	}
 
