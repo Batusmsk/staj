@@ -7,7 +7,7 @@ public class AccountApp {
 	public static void main(String[] args) {
 
 		Account acc;
-		acc = new Account("TR1", 100000);
+		acc = new Account("TR1", 50000);
 		
 		acc.withdraw(10000);
 		acc.deposit(32500);
