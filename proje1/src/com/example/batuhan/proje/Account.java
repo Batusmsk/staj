@@ -4,11 +4,11 @@ public class Account {
 
 	private final String iban;
 	private double balance;
-
+	
 	// alt + shift + s constructor fields
-	public Account(String iban, double balance) {
+	public Account(String iban, double string) {
 		this.iban = iban;
-		this.balance = balance;
+		this.balance = string;
 
 	}
 

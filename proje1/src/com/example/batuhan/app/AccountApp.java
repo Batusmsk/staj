@@ -1,10 +1,9 @@
 package com.example.batuhan.app;
 
 import com.example.batuhan.proje.Account;
-//ctrl + shift + o
 
 public class AccountApp {
-
+            
 	public static void main(String[] args) {
 
 		Account acc;

@@ -1,0 +1,15 @@
+package com.example.batuhan.proje;
+
+public class Account {
+	
+	private String iban;
+	private double balance;
+	
+	// alt + shift + s constructor fields
+	public Account(String iban, double balance) {
+		this.iban = iban;
+		this.balance = balance;
+	}
+	
+	
+}
