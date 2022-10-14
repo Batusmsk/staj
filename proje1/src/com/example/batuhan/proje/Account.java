@@ -3,7 +3,7 @@ package com.example.batuhan.proje;
 public class Account {
 
 	private final String iban;
-	private double balance;
+	protected double balance;
 	
 	// alt + shift + s constructor fields
 	public Account(String iban, double string) {

@@ -1,5 +1,6 @@
 package com.example.batuhan.proje;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +10,7 @@ public class Customer {
     private final String identityNo;
     private String fullName;
     private List<Account> accounts;
-    Account acc;
-
+    
     public Customer(String identityNo, String fullName) {
 
         this.identityNo = identityNo;
@@ -42,11 +42,13 @@ public class Customer {
 
     public Optional<Account> getAccount(String iban) {
 
-        for (Account account : accounts) {
+        for (Account acc : accounts) {
             if (acc.getIban().equals(iban)) {
                 return Optional.of(acc);
             }
+            
         }
+        //System.out.println(iban + "İbanlı bir hesap bulunamadı.");
         return Optional.empty();
     }
 
@@ -63,8 +65,7 @@ public class Customer {
     public Optional<Account> removeAccount(String iban) {
     
         Optional<Account> account = getAccount(iban);
-        account.ifPresent(value -> accounts.remove(acc));
-        
+        account.ifPresent(value -> accounts.remove(account.get()));
         return account;
     }
 }
