@@ -26,7 +26,7 @@ public class customerApp {
         jack.getAccount("TR2").ifPresentOrElse(
                 withdraw45k.andThen(withdraw5k), () -> System.out.println("Böyle bir hesap bulunamadı"));
 
-        jack.removeAccount("TR2").ifPresentOrElse(acc -> System.out.println(acc.getIban()+ " Ibanlı hesap silindi."), () -> System.out.println("Silmek istediğiniz hesap bulunamadı"));
+        jack.removeAccount("TR2").ifPresentOrElse(acc -> System.out.println(acc.getIban() + " Ibanlı hesap silindi."), () -> System.out.println("Silmek istediğiniz hesap bulunamadı"));
         System.out.println("Hesap sayısı: " + jack.getNumberOfAccount());
 
         
