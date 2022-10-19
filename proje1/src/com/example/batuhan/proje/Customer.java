@@ -10,7 +10,7 @@ public class Customer {
     private final String identityNo;
     private String fullName;
     private List<Account> accounts;
-    
+
     public Customer(String identityNo, String fullName) {
 
         this.identityNo = identityNo;
@@ -46,10 +46,21 @@ public class Customer {
             if (acc.getIban().equals(iban)) {
                 return Optional.of(acc);
             }
-            
+
         }
-        //System.out.println(iban + "İbanlı bir hesap bulunamadı.");
+        // System.out.println(iban + "İbanlı bir hesap bulunamadı.");
         return Optional.empty();
+    }
+
+    public ArrayList<String> toArray() {
+
+        ArrayList<String> array = new ArrayList<String>(); 
+    
+        for (Account acc : accounts) {
+            array.add(acc.getIban());
+            //System.out.println(acc.getIban());
+        }
+        return array;
     }
 
     public void addAccount(Account acc) {
@@ -63,9 +74,18 @@ public class Customer {
     }
 
     public Optional<Account> removeAccount(String iban) {
-    
+
         Optional<Account> account = getAccount(iban);
         account.ifPresent(value -> accounts.remove(account.get()));
         return account;
+    }
+
+    public double getBalance() {
+        double totalBalance = 0.;
+
+        for (Account acc : accounts) {
+            totalBalance += acc.getBalance();
+        }
+         return totalBalance;
     }
 }
