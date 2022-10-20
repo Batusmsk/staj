@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class patient {
+public class Patient {
 
     private int patientID;
     private String patientFullName;
     private String patientBirthDate;
 
-    private List<register> patients;
+    private List<Register> patients;
 
-    public patient(int ID, String fullName, String birthDate) {
+    public Patient(int ID, String fullName, String birthDate) {
 
         this.patientID = ID;
         this.patientFullName = fullName;
@@ -42,17 +42,17 @@ public class patient {
         return patients.size();
     }
 
-    public void addPatient(register pat) {
+    public void addPatient(Register pat) {
         this.patients.add(pat);
     }
 
-    public register getPatientReg(int index) {
+    public Register getPatientReg(int index) {
         return this.patients.get(index);
     }
 
-    public Optional<register> getPateintRegisters(int regNo) {
+    public Optional<Register> getPatientRegisters(int regNo) {
 
-        for (register pat : patients) {
+        for (Register pat : patients) {
             if (pat.patientRegNoGet() == regNo) {
                 return Optional.of(pat);
             }
@@ -60,21 +60,21 @@ public class patient {
         return Optional.empty();
     }
 
-    public Optional<register> removePatientReg(String regNo) {
+    public Optional<Register> removePatientReg(String regNo) {
 
-        Optional<register> register = getPateintRegisters(Integer.parseInt(regNo));
-        register.ifPresentOrElse(value -> patients.remove(register.get()),
+        Optional<Register> Register = getPatientRegisters(Integer.parseInt(regNo));
+        Register.ifPresentOrElse(value -> patients.remove(Register.get()),
                 () -> System.out.println("Böyle bir kayıt bulunamadı."));
-        return register;
+        return Register;
     }
 
-    public register removePatientReg(int index) {
+    public Register removePatientReg(int index) {
         return this.patients.remove(index);
     }
 
     public ArrayList<Integer> toArray() {
         ArrayList<Integer> array = new ArrayList<>();
-        for (register reg : patients) {
+        for (Register reg : patients) {
             array.add(reg.patientRegNoGet());
         }
         return array;

@@ -1,13 +1,13 @@
 package com.example.batuhan.uygulama;
 
-import com.example.batuhan.hastane.register;
+import com.example.batuhan.hastane.Register;
 
-public class registerApp {
+public class RegisterApp {
     public static void main(String[] args) {
 
-        register patient;
+        Register patient;
 
-        patient = new register(1, "Öksürük", "19.10.2022");
+        patient = new Register(1, "Öksürük", "19.10.2022");
 
         System.out.println(patient.patientComplaintGet());
         System.out.println(patient.toString());

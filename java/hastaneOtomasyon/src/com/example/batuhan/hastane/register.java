@@ -3,7 +3,7 @@ package com.example.batuhan.hastane;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class register {
+public class Register {
 
     // int patientID;
     // String patientBirthDate;
@@ -12,7 +12,7 @@ public class register {
     String patientComplaint;
     String patientRegDate;
 
-    public register(int registerNo, String complaint, String regDate) {
+    public Register(int registerNo, String complaint, String regDate) {
 
         // this.patientID = identity;
         // this.patientBirthDate = birthDate;
