@@ -2,10 +2,10 @@ package com.example.animals.domain;
 
 public class Cat extends Animal implements Pet{
     private String name;
-     Cat() {
+     public Cat() {
          this("Garfield");
      }
-     Cat(String name) {
+     public Cat(String name) {
          super(4);
          this.name = name;
      }

@@ -11,7 +11,7 @@ public abstract class Animal {
     }
     public void walk() {
         System.out.println(
-                String.format("Hayvan şuanda %d yürüyor", legs));
+                String.format("Hayvan şuanda %d bacağıyla yürüyor", legs));
 
     }
     public abstract void eat();

@@ -12,7 +12,6 @@ public class Fish extends Animal implements Pet{
     public void eat() {
         System.out.println(String.format("%s Yemek yiyor", name));
     }
-
     @Override
     public void setName(String name) {
         this.name = name;

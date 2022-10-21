@@ -1,6 +1,6 @@
 package com.example.animals.domain;
 
-public class Spider extends Animal {
+public class Spider extends Animal{
 
     public Spider() {
         super(8);
@@ -8,5 +8,5 @@ public class Spider extends Animal {
 @Override
     public void eat() {
     System.out.println("Örümcek şuan yemek yiyor");
-    }
+}
 }
