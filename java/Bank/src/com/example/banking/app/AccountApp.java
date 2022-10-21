@@ -1,7 +1,6 @@
 package com.example.banking.app;
 
 import java.util.Scanner;
-
 import com.example.banking.proje.Account;
 
 public class AccountApp {
