@@ -1,10 +1,9 @@
-package com.example.batuhan.uygulama;
+package com.example.batuhan.app;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.example.batuhan.hastane.Patient;
-import com.example.batuhan.hastane.Register;
+import com.example.batuhan.hospital.*;
 
 public class PatientApp {
 

@@ -1,4 +1,4 @@
-package com.example.batuhan.hastane;
+package com.example.batuhan.hospital;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

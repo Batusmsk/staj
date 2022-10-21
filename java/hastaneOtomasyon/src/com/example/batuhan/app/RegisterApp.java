@@ -1,6 +1,6 @@
-package com.example.batuhan.uygulama;
+package com.example.batuhan.app;
 
-import com.example.batuhan.hastane.Register;
+import com.example.batuhan.hospital.Register;
 
 public class RegisterApp {
     public static void main(String[] args) {
