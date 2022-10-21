@@ -39,3 +39,4 @@ build/
 default.etcd
 /logs/spring-boot-logging.log
 /.metadata/
+*.class
