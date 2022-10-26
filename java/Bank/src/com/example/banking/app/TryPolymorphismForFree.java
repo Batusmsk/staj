@@ -15,7 +15,7 @@ public class TryPolymorphismForFree {
         if (random.nextBoolean()) {
             acc = new Account("TR1", 10000);
         } else {
-            acc = new checkingAccount("TR2", 20000, 5000);
+            acc = new CheckingAccount("TR2", 20000, 5000);
         }
         
         System.out.println(acc.getClass().getName());

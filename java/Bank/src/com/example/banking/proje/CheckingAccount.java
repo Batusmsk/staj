@@ -1,9 +1,9 @@
 package com.example.banking.proje;
 
-public class checkingAccount extends Account {
+public class CheckingAccount extends Account {
     private double overDraftAmount;
 
-    public checkingAccount(String iban, double balance, double overDraftAmount) {
+    public CheckingAccount(String iban, double balance, double overDraftAmount) {
         super(iban, balance);
         this.overDraftAmount = overDraftAmount;
     }

@@ -1,5 +1,7 @@
 package com.example.banking.proje;
 
+import java.util.Objects;
+
 public class Account {
     public static int counter = 1;
     private AccountStatus status = AccountStatus.ACTIVE;
@@ -16,6 +18,19 @@ public class Account {
 
     public AccountStatus getStatus(AccountStatus status) {
         return status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(iban, account.iban);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iban);
     }
 
     public void setStatus(AccountStatus status) {
