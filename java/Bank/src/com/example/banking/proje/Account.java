@@ -1,5 +1,6 @@
 package com.example.banking.proje;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.Objects;
 
 public class Account {
@@ -46,25 +47,21 @@ public class Account {
     }
 
 
-    public boolean deposit(double amount) {
+    public final void deposit(double amount) {
         if (amount <= 0.)
-            return false;
+            throw new IllegalArgumentException("Miktar negatif olamaz");
         this.balance = this.balance + amount;
-        System.out.println("Hesabınıza " + amount + " tutarında para yatırıldı. Yeni bakiyeniz " + this.balance);
-        return true;
+
     }
 
-    public boolean withdraw(double amount) {
+    public void withdraw(double amount) throws InsufficientBalanceException {
         System.out.println("Account::withdraw");
         if (amount <= 0.)
-            return false;
+            throw new IllegalArgumentException("Miktar negatif olamaz");
         if (amount > balance) {
-            System.out.println(amount + " Tutarı hesabınızdaki para tutarını aşıyor");
-            return false;
+            throw new InsufficientBalanceException("Yetersiz bakiye", this.balance-amount);
         }
         this.balance = this.balance - amount;
-        System.out.println("Hesabınızdan " + amount + " tutarında para çekildi. Yeni bakiyeniz " + this.balance);
-        return true;
     }
 
     @Override

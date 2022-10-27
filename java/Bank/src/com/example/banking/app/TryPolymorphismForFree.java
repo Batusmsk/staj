@@ -19,7 +19,11 @@ public class TryPolymorphismForFree {
         }
         
         System.out.println(acc.getClass().getName());
-        acc.withdraw(15000);
+        try {
+            acc.withdraw(15000);
+        } catch (InsufficientBalanceException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

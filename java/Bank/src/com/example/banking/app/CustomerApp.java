@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import com.example.banking.proje.Account;
 import com.example.banking.proje.Customer;
+import com.example.banking.proje.InsufficientBalanceException;
 
 public class CustomerApp {
     public static void main(String[] args) {
@@ -19,8 +20,21 @@ public class CustomerApp {
         jack.addAccount(acc3);
 
         System.out.println("Hesap sayısı: " + jack.getNumberOfAccount());
-        Consumer<Account> withdraw45k = acc -> acc.withdraw(5000);
-        Consumer<Account> withdraw5k = acc -> acc.withdraw(0);
+
+        Consumer<Account> withdraw45k = acc -> {
+            try {
+                acc.withdraw(5000);
+            } catch (InsufficientBalanceException e) {
+                e.printStackTrace();
+            }
+        };
+        Consumer<Account> withdraw5k = acc -> {
+            try {
+                acc.withdraw(0);
+            } catch (InsufficientBalanceException e) {
+                e.printStackTrace();
+            }
+        };
 
         jack.getAccount("TR1").ifPresentOrElse(
                 withdraw45k.andThen(withdraw5k), () -> System.out.println("Böyle bir hesap bulunamadı"));

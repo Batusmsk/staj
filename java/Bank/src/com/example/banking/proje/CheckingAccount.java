@@ -13,13 +13,13 @@ public class CheckingAccount extends Account {
     }
     
     @Override
-    public boolean withdraw(double amount) {
+    public void withdraw(double amount) throws InsufficientBalanceException {
         System.out.println("CheckingAccount::withdraw");
         if(amount <= 0.)
-            return false;
+            throw new IllegalArgumentException("Miktar negatif olamaz");
          if(amount > (balance+overDraftAmount))
-            return false;
+             throw new InsufficientBalanceException("Yetersiz bakiye", this.balance-amount-overDraftAmount);
         this.balance = this.balance - amount;
-        return true;
+
     }
 }
