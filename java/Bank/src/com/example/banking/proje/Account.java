@@ -1,11 +1,12 @@
 package com.example.banking.proje;
 
 import javax.naming.InsufficientResourcesException;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Account {
+public class Account implements Serializable {
     public static int counter = 1;
-    private AccountStatus status = AccountStatus.ACTIVE;
+    private transient AccountStatus status = AccountStatus.ACTIVE;
     private final String iban;
     protected double balance;
 

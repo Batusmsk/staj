@@ -1,11 +1,12 @@
 package com.example.banking.proje;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class Bank {
+public final class Bank implements Serializable {
     private final int id;
     private String name;
     private List<Customer> customers;

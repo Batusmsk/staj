@@ -1,11 +1,12 @@
 package com.example.banking.proje;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Customer {
+public class Customer implements Serializable {
 
     private final String identityNo;
     private String fullName;
@@ -63,6 +64,14 @@ public class Customer {
         }
         // System.out.println(iban + "İbanlı bir hesap bulunamadı.");
         return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "identityNo='" + identityNo + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
     }
 
     public ArrayList<String> toArray() {
