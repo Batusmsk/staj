@@ -2,6 +2,7 @@ package com.example.lottery.service.business;
 
 import com.example.lottery.service.LotteryService;
 import com.example.lottery.service.Service;
+import com.example.lottery.service.ServiceQuality;
 import com.example.numgen.service.RandomNumberService;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Service(ServiceQualtiy.FAST)
+@Service(ServiceQuality.SLOW)
 public class SimpleLotteryService implements LotteryService {
 
 

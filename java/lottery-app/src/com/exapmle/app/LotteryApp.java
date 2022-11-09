@@ -29,6 +29,7 @@ public class LotteryApp {
         
         lotterySrv = services.stream().map(Provider::get).filter(isFast).findFirst();
         
+        
         lotterySrv.ifPresentOrElse(srv -> srv.draw(1,49,6,10).forEach(System.out::println),
         () -> System.Out.Println("Connot fint a matching service!"));
     }
