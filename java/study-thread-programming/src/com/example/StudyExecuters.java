@@ -11,7 +11,7 @@ public class StudyExecuters {
         ExecutorService es = Executors.newFixedThreadPool(cores);
 
         for (int i = 0; i < 1000; i++) {
-            es.submit(() -> System.out.println("Hello World"));
+            es.submit(() -> System.out.println("Hello World "));
         }
 
         es.shutdown();
