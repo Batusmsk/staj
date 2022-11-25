@@ -1,5 +1,9 @@
+package com.example.imdb.model;
+
 import java.util.Collection;
 import java.util.Collections;
+
+import com.example.imdb.domain.Movie;
 /**
  * 
  * @author Binnur Kurt

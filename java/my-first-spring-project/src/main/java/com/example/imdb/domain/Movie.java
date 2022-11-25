@@ -1,3 +1,5 @@
+package com.example.imdb.domain;
+
 import java.util.ArrayList;
 import java.util.List;
 

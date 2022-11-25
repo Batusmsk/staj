@@ -1,3 +1,5 @@
+package com.example.imdb.domain;
+
 /**
  * 
  * @author Binnur Kurt

@@ -1,4 +1,11 @@
+package com.example.imdb.service;
+
 import java.util.Collection;
+
+import com.example.imdb.domain.Director;
+import com.example.imdb.domain.Genre;
+import com.example.imdb.domain.Movie;
+import com.example.imdb.model.CriteriaBean;
 
 /**
  * 

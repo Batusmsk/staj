@@ -1,27 +1,46 @@
-﻿import java.util.ArrayList;
+package com.example.imdb.service.business;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.example.imdb.domain.Director;
+import com.example.imdb.domain.Genre;
+import com.example.imdb.domain.Movie;
+import com.example.imdb.model.CriteriaBean;
+import com.example.imdb.service.MovieService;
+import com.example.imdb.service.SequenceService;
 
 /**
  * 
  * @author Binnur Kurt
  *
  */
+
 public class InMemoryMovieService implements MovieService {
+
 	private SequenceService sequenceSrv;
+
 	private Map<Integer, Movie> movies;
 	private Map<Integer, Genre> genres;
 	private Map<Integer, Director> directors;
 
 	public InMemoryMovieService() {
+		System.err.println("InMemoryMovieService() is running...");
 		movies = new ConcurrentHashMap<>();
 		genres = new ConcurrentHashMap<>();
 		directors = new ConcurrentHashMap<>();
+
+	}
+
+	public void setSequenceSrv(SequenceService sequenceSrv) {
+		System.err.println("setSqeuanceSrv() is running...");
+		this.sequenceSrv = sequenceSrv;
 	}
 
 	public void populate() {
+		System.err.println("populate() is running...");
 		sequenceSrv.nextId("movies", 256);
 		movies.put(1, new Movie(1, "500 Days Of Summer", 2009, "tt1022603"));
 		movies.put(2, new Movie(2, "Beyond a Reasonable Doubt", 2009,
@@ -38,7 +57,7 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(12, new Movie(12, "Bornova Bornova", 2009, "tt1548542"));
 		movies.put(13, new Movie(13, "Coco avant Chanel", 2009, "tt1035736"));
 		movies.put(14,
-				new Movie(14, "Nefes: Vatan sa?olsun", 2009, "tt1171701"));
+				new Movie(14, "Nefes: Vatan sagolsun", 2009, "tt1171701"));
 		movies.put(15, new Movie(15, "Up", 2009, "tt1049413"));
 		movies.put(16, new Movie(16, "Whiteout", 2009, "tt0365929"));
 		movies.put(17, new Movie(17, "The Time Travelers Wife", 2009,
@@ -91,7 +110,7 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(57, new Movie(57, "God on Trial", 2008, "tt1173494"));
 		movies.put(58, new Movie(58, "The Brothers Bloom", 2009, "tt0844286"));
 		movies.put(59, new Movie(59, "My One and Only", 2009, "tt1185431"));
-		movies.put(60, new Movie(60, "Mâ€žn Som Hatar Kvinnor", 2009,
+		movies.put(60, new Movie(60, "Mn Som Hatar Kvinnor", 2009,
 				"tt1132620"));
 		movies.put(61, new Movie(61, "Mary and Max", 2009, "tt0978762"));
 		movies.put(62,
@@ -142,12 +161,12 @@ public class InMemoryMovieService implements MovieService {
 				"tt0428870"));
 		movies.put(100, new Movie(100, "Hwal", 2005, "tt0456470"));
 		movies.put(101, new Movie(101, "Kimssi pyoryugi", 2009, "tt1499666"));
-		movies.put(102, new Movie(102, "Uzak ?htimal", 2009, "tt1366981"));
+		movies.put(102, new Movie(102, "Uzak ghtimal", 2009, "tt1366981"));
 		movies.put(103, new Movie(103, "Daybreakers", 2009, "tt0433362"));
 		movies.put(104, new Movie(104, "Bin-mong", 2008, "tt1165253"));
 		movies.put(105, new Movie(105, "Oldboy", 2003, "tt0364569"));
 		movies.put(106, new Movie(106, "Cairo Time", 2009, "tt0896529"));
-		movies.put(107, new Movie(107, "Pazar - Bir Ticaret MasalÃ•", 2008,
+		movies.put(107, new Movie(107, "Pazar - Bir Ticaret Masal", 2008,
 				"tt1286165"));
 		movies.put(108, new Movie(108, "The Cove", 2009, "tt1313104"));
 		movies.put(109, new Movie(109, "Tenderness", 2009, "tt0494864"));
@@ -168,7 +187,7 @@ public class InMemoryMovieService implements MovieService {
 				"tt0293715"));
 		movies.put(121, new Movie(121, "Samaria", 2004, "tt0397619"));
 		movies.put(122, new Movie(122, "Dial M for Murder", 1954, "tt0046912"));
-		movies.put(123, new Movie(123, "Un prophÅ te", 2009, "tt1235166"));
+		movies.put(123, new Movie(123, "Un prophÅte", 2009, "tt1235166"));
 		movies.put(124, new Movie(124, "The Vicious Kind", 2009, "tt1183921"));
 		movies.put(125, new Movie(125, "Bakjwi", 2009, "tt0762073"));
 		movies.put(126, new Movie(126, "Up in the air", 2009, "tt1193138"));
@@ -182,7 +201,7 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(133, new Movie(133, "Agora", 2009, "tt1186830"));
 		movies.put(134, new Movie(134, "Motherhood", 2009, "tt1220220"));
 		movies.put(135, new Movie(135, "The Wild Brunch", 1969, "tt0065214"));
-		movies.put(136, new Movie(136, "Ne?eli Hayat", 2009, "tt1523515"));
+		movies.put(136, new Movie(136, "Negeli Hayat", 2009, "tt1523515"));
 		movies.put(137, new Movie(137, "The Greatest", 2009, "tt1226232"));
 		movies.put(138, new Movie(138, "My Only Sunshine", 2008, "tt1370212"));
 		movies.put(139, new Movie(139, "The Accused", 1988, "tt0094608"));
@@ -217,7 +236,7 @@ public class InMemoryMovieService implements MovieService {
 				"tt0102494"));
 		movies.put(159, new Movie(159, "The Road", 2009, "tt0898367"));
 		movies.put(160, new Movie(160, "Karamazovi", 2008, "tt1080716"));
-		movies.put(161, new Movie(161, "Mâ€žn som hatar kvinnor", 2009,
+		movies.put(161, new Movie(161, "Mn som hatar kvinnor", 2009,
 				"tt1132620"));
 		movies.put(162, new Movie(162, "The Collector", 2009, "tt0844479"));
 		movies.put(163, new Movie(163, "Bacheha-Ye aseman", 1997, "tt0118849"));
@@ -225,7 +244,7 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(165, new Movie(165, "Leaves of Grass", 2009, "tt1151359"));
 		movies.put(166, new Movie(166, "Scarface", 1983, "tt0086250"));
 		movies.put(167, new Movie(167, "Wicker Park", 2004, "tt0324554"));
-		movies.put(168, new Movie(168, "L appartement", 1996, "tt0115561"));
+		movies.put(168, new Movie(168, "Lappartement", 1996, "tt0115561"));
 		movies.put(169, new Movie(169, "Brooklyns Finest", 2009, "tt1210042"));
 		movies.put(170, new Movie(170, "Alice", 2009, "tt1461312"));
 		movies.put(171, new Movie(171, "Duplicity", 2009, "tt1135487"));
@@ -238,7 +257,7 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(178, new Movie(178, "Brothers", 2009, "tt0765010"));
 		movies.put(179, new Movie(179, "Crazy Heart", 2009, "tt1263670"));
 		movies.put(180, new Movie(180, "Shutter Island", 2010, "tt1130884"));
-		movies.put(181, new Movie(181, "KÃ•skanmak", 2009, "tt1512894"));
+		movies.put(181, new Movie(181, "Kskanmak", 2009, "tt1512894"));
 		movies.put(182, new Movie(182,
 				"Das weisse Band - Eine deutsche Kindergeschichte", 2009,
 				"tt1149362"));
@@ -284,7 +303,7 @@ public class InMemoryMovieService implements MovieService {
 				"tt1244659"));
 		movies.put(216, new Movie(216, "Leap Year", 2010, "tt1216492"));
 		movies.put(217, new Movie(217, "Nowhere Boy", 2009, "tt1266029"));
-		movies.put(218, new Movie(218, "Yah?i BatÃ•", 2010, "tt1567448"));
+		movies.put(218, new Movie(218, "Yahgi Bat", 2010, "tt1567448"));
 		movies.put(219, new Movie(219, "Sonbahar", 2008, "tt1330591"));
 		movies.put(220, new Movie(220, "Tombstone", 1993, "tt0108358"));
 		movies.put(221, new Movie(221, "La Sconosciuta", 2006, "tt0494271"));
@@ -311,8 +330,8 @@ public class InMemoryMovieService implements MovieService {
 		movies.put(238, new Movie(238,
 				"My Left Foot: The Story of Christy Brown", 1989, "tt0097937"));
 		movies.put(239, new Movie(239, "Sin Nombre", 2010, "tt1127715"));
-		movies.put(240, new Movie(240, "Eloâ€¹se", 2009, "tt1221188"));
-		movies.put(241, new Movie(241, "Ba?ka Dilde A?k", 2009, "tt1513713"));
+		movies.put(240, new Movie(240, "Elo¹se", 2009, "tt1221188"));
+		movies.put(241, new Movie(241, "Bagka Dilde Agk", 2009, "tt1513713"));
 		movies.put(242, new Movie(242, "The Book of Eli", 2010, "tt1037705"));
 		movies.put(243, new Movie(243, "Air Doll", 2009, "tt1371630"));
 		movies.put(244, new Movie(244, "Azumi", 2003, "tt0384819"));
@@ -997,15 +1016,15 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(9, new Director(9, "Nora Ephron", "nm0001188"));
 		directors.put(10, new Director(10, "Pedro Almodovar", "nm0000264"));
 		directors.put(11, new Director(11, "Gary Sinise", "nm0000641"));
-		directors.put(12, new Director(12, "NimrÂ¢d Antal", "nm0030735"));
-		directors.put(13, new Director(13, "?nan Temelkuran", "nm3692009"));
+		directors.put(12, new Director(12, "Nimrd Antal", "nm0030735"));
+		directors.put(13, new Director(13, "gnan Temelkuran", "nm3692009"));
 		directors.put(14, new Director(14, "Anne Fontaine", "nm0284774"));
 		directors.put(15, new Director(15, "Levent Semerci", "nm2896395"));
 		directors.put(16, new Director(16, "Pete Docter", "nm0230032"));
 		directors.put(17, new Director(17, "Dominic Sena", "nm0784061"));
 		directors.put(18, new Director(18, "Robert Schwentke", "nm0777881"));
 		directors.put(19, new Director(19, "Woody Allen", "nm0000095"));
-		directors.put(20, new Director(20, "Max Fâ€žrberbâ€�ck", "nm0299621"));
+		directors.put(20, new Director(20, "Max Frberbck", "nm0299621"));
 		directors.put(21, new Director(21, "Ruben Fleischer", "nm0281508"));
 		directors.put(22, new Director(22, "Blayne Weaver", "nm0915814"));
 		directors.put(23, new Director(23, "Zack Snyder", "nm0811583"));
@@ -1017,7 +1036,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(29, new Director(29, "Rod Lurie", "nm0527109"));
 		directors.put(30, new Director(30, "Eric Red", "nm0714599"));
 		directors.put(31, new Director(31, "Scott Mann", "nm1470993"));
-		directors.put(32, new Director(32, "Philipp Stâ€�lzl", "nm0836715"));
+		directors.put(32, new Director(32, "Philipp Stlzl", "nm0836715"));
 		directors.put(33, new Director(33, "Ethan Coen", "nm0001053"));
 		directors.put(34, new Director(34, "Joel Coen", "nm0001054"));
 		directors.put(35, new Director(35, "Kevin Greutert", "nm0340436"));
@@ -1060,7 +1079,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(72, new Director(72, "Costas Ferris", "nm0002948"));
 		directors.put(73, new Director(73, "Tom Hooper", "nm0393799"));
 		directors.put(74, new Director(74, "Paul Wilmshurst", "nm0932882"));
-		directors.put(75, new Director(75, "Fatih AkÃ•n", "nm0015359"));
+		directors.put(75, new Director(75, "Fatih Akn", "nm0015359"));
 		directors.put(76, new Director(76, "Yvan Attal", "nm0040939"));
 		directors.put(77, new Director(77, "Andrea Arnold", "nm0036349"));
 		directors.put(78, new Director(78, "Steven Soderbergh", "nm0001752"));
@@ -1075,7 +1094,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(86, new Director(86, "Vikram K. Kumar", "nm3347823"));
 		directors.put(87, new Director(87, "Billy Wilder", "nm0000697"));
 		directors.put(88, new Director(88, "George Roy Hill", "nm0001351"));
-		directors.put(89, new Director(89, "Juan Josâ€š Campanella",
+		directors.put(89, new Director(89, "Juan Jos Campanella",
 				"nm0002728"));
 		directors.put(90, new Director(90, "Andrzej Wajda", "nm0906667"));
 		directors.put(91, new Director(91, "Dennis Hopper", "nm0000454"));
@@ -1087,7 +1106,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(97, new Director(97, "John H. Lee", "nm0497565"));
 		directors.put(98, new Director(98, "Hae-jun Lee", "nm1536497"));
 		directors
-				.put(99, new Director(99, "Mahmut FazÃ•l Co?kun", "nm3312722"));
+				.put(99, new Director(99, "Mahmut Fazl Cogkun", "nm3312722"));
 		directors.put(100, new Director(100, "Michael Spierig", "nm1294961"));
 		directors.put(101, new Director(101, "Peter Spierig", "nm1294962"));
 		directors.put(102, new Director(102, "Chan-wook Park", "nm0661791"));
@@ -1095,7 +1114,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(104, new Director(104, "Ben Hopkins", "nm0394114"));
 		directors.put(105, new Director(105, "Louie Psihoyos", "nm3174775"));
 		directors.put(106, new Director(106, "John Polson", "nm0689852"));
-		directors.put(107, new Director(107, "Lasse Hallstrâ€�m", "nm0002120"));
+		directors.put(107, new Director(107, "Lasse Hallstrm", "nm0002120"));
 		directors.put(108, new Director(108, "John Huston", "nm0001379"));
 		directors.put(109, new Director(109, "Philippe de Broca", "nm0003606"));
 		directors.put(110, new Director(110, "Blake Edwards", "nm0001175"));
@@ -1116,11 +1135,11 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(123, new Director(123, "Kathryn Bigelow", "nm0000941"));
 		directors.put(124, new Director(124, "Joe Wright", "m0942504"));
 		directors.put(125,
-				new Director(125, "Alejandro AmenÂ bar", "nm0024622"));
+				new Director(125, "Alejandro Amenbar", "nm0024622"));
 		directors.put(126,
 				new Director(126, "Katherine Dieckmann", "nm0225869"));
 		directors.put(127, new Director(127, "Sam Peckinpah", "nm0001603"));
-		directors.put(128, new Director(128, "YÃ•lmaz Erdo?an", "nm0258784"));
+		directors.put(128, new Director(128, "Ylmaz Erdogan", "nm0258784"));
 		directors.put(129, new Director(129, "Shana Feste", "nm0275277"));
 		directors.put(130, new Director(130, "Reha Erdem", "nm0258732"));
 		directors.put(131, new Director(131, "Jonathan Kaplan", "nm0438279"));
@@ -1200,8 +1219,8 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(202, new Director(202, "Anand Tucker", "nm0875793"));
 		directors.put(203, new Director(203, "Sam Taylor Wood", "nm0939993"));
 		directors
-				.put(204, new Director(204, "â„¢mer Faruk Sorak", "nm0814716"));
-		directors.put(205, new Director(205, "â„¢zcan Alper", "nm3213296"));
+				.put(204, new Director(204, "mer Faruk Sorak", "nm0814716"));
+		directors.put(205, new Director(205, "zcan Alper", "nm3213296"));
 		directors.put(206, new Director(206, "Garry Marshall", "nm0005190"));
 		directors
 				.put(207, new Director(207, "George P. Cosmatos", "nm0181902"));
@@ -1217,7 +1236,7 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(216, new Director(216, "Isabel Coixet", "nm0170043"));
 		directors.put(217, new Director(217, "Pavel Chukhraj", "nm0161056"));
 		directors.put(218, new Director(218, "Ketche", "nm3773770"));
-		directors.put(219, new Director(219, "ZÂ�lfÂ� Livaneli", "nm0515101"));
+		directors.put(219, new Director(219, "Zlf Livaneli", "nm0515101"));
 		directors.put(220, new Director(220, "Sam Raimi", "nm0000600"));
 		directors.put(221, new Director(221, "Brian Goodman", "nm0329023"));
 		directors.put(222, new Director(222, "Christophe Barratier",
@@ -1225,11 +1244,11 @@ public class InMemoryMovieService implements MovieService {
 		directors.put(223, new Director(223, "Claude Berri", "nm0001945"));
 		directors.put(224, new Director(224, "Cary Fukunaga", "nm1560977"));
 		directors.put(225, new Director(225, "Jesus Garay", "nm0304879"));
-		directors.put(226, new Director(226, "?lksen Ba?arÃ•r", "nm2079185"));
+		directors.put(226, new Director(226, "glksen Bagarr", "nm2079185"));
 		directors.put(227, new Director(227, "Albert Hughes", "nm0400436"));
 		directors.put(228, new Director(228, "Allen Hughes", "nm0400441"));
 		directors.put(229, new Director(229, "Hirokazu Koreeda", "nm0466153"));
-		directors.put(230, new Director(230, "Ryâ€“hei Kitamura", "nm0457565"));
+		directors.put(230, new Director(230, "Ryhei Kitamura", "nm0457565"));
 		directors.put(231, new Director(231, "Shusuke Kaneko", "nm0437526"));
 		directors.put(232, new Director(232, "Gregor Jordan", "nm0429964"));
 		directors.put(241, new Director(241, "Mike Mitchell", "nm0593610"));
