@@ -1,83 +1,50 @@
 package com.batuhan.simsek.jpa.entity;
 
-import java.util.Objects;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
+
+
 
 
 
 @Entity
-@Table(name="movies")
+@Table(name="movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="movieid")
-
+    @Getter
+    @Setter
     private Integer movieID;
+    @Getter
+    @Setter
     private String title;
+    @Getter
+    @Setter
     private int year;
+    @Getter
+    @Setter
     private String imdb;
 
-    public Movie() {
-
-    }
-
-    public Movie(String title, int year, String imdb) {
-        this.title = title;
-        this.year = year;
-        this.imdb = imdb;
-    }
-
-    public Integer getMovieID() {
-        return movieID;
-    }
-
-    public void setMovieID(Integer movieID) {
-        this.movieID = movieID;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getImdb() {
-        return imdb;
-    }
-
-    public void setImdb(String imdb) {
-        this.imdb = imdb;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
-        return year == movie.year && Objects.equals(movieID, movie.movieID) && Objects.equals(title, movie.title) && Objects.equals(imdb, movie.imdb);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(movieID, title, year, imdb);
-    }
-
+    @Getter
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER, mappedBy = "movie")
+    @OrderBy("id ASC")
+    private List<Actor> actor;
+    
     @Override
     public String toString() {
         return "Movie{" +
