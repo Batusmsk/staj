@@ -10,7 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MovieDto {
-	
+
+	private Integer id;
     private String title;
     private int year;
     private String imdb;

@@ -26,11 +26,13 @@ public class Actor {
     @Setter
     private Integer actorId;
     
-    @Getter
+    
     @Setter
+    @Getter
     private String name;
-    @Getter
+    
     @Setter
+    @Getter
     private String lastName;
     
     @Getter

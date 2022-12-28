@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.batuhan.simsek.jpa.Mapper.MovieEntityToDto;
 import com.batuhan.simsek.jpa.dto.ActorDto;
 import com.batuhan.simsek.jpa.dto.MovieDto;
+import com.batuhan.simsek.jpa.dto.UpdateMovieRequest;
 import com.batuhan.simsek.jpa.entity.Actor;
 import com.batuhan.simsek.jpa.entity.Movie;
 import com.batuhan.simsek.jpa.repository.MovieRepository;
@@ -20,19 +22,34 @@ public class MovieService {
 	@Autowired
 	MovieRepository movieRepository;
 
-	public List<Movie> getMovies() {
+	public List<MovieDto> getMovies() {
 
-		return movieRepository.findAll();
+		MovieEntityToDto converter=new MovieEntityToDto();
+		return converter.convert(movieRepository.findAll());
 
 	}
 
-	public Optional<Movie> getMovie(Integer id) {
-
-		return movieRepository.findById(id);
+	public MovieDto getMovie(Integer id) {
+		MovieEntityToDto converter=new MovieEntityToDto();
+		return converter.convert(movieRepository.findById(id).orElse(new Movie()));
+		
+	}
+	
+	public void deleteMovie(Integer id) { 
+		movieRepository.deleteById(id);	
+	}
+	
+	public boolean updateMovie(UpdateMovieRequest input) { 
+		Movie movie = movieRepository.findById(input.getId()).orElse(new Movie());
+		movie.setImdb(input.getImdb());
+		movie.setTitle(input.getTitle());
+		movie.setYear(input.getYear());
+		movieRepository.save(movie);
+		return true;
 
 	}
 	
-	public Movie saveMovie(MovieDto moviedto) {
+	public Boolean saveMovie(MovieDto moviedto) {
 		Movie movie = new Movie();
 		List<Actor> actors = new ArrayList<Actor>();
 		for(ActorDto actorDto:moviedto.getActors()) {
@@ -46,7 +63,9 @@ public class MovieService {
 		movie.setTitle(moviedto.getTitle());
 		movie.setYear(moviedto.getYear());
 		movie.setActor(actors);
-		return movieRepository.save(movie);
+		var ret=movieRepository.save(movie);
+		
+		return true;
 	}
 
 }
