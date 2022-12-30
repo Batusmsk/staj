@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.batuhan.simsek.jpa.entity.Account;
 import com.batuhan.simsek.jpa.repository.Balance;
+import com.batuhan.simsek.jpa.requests.TransferRequest;
 import com.batuhan.simsek.jpa.service.BankService;
 import com.batuhan.simsek.jpa.service.CustomerService;
 
@@ -28,15 +29,21 @@ public class CustomerController {
     	return new ResponseEntity<Optional<Balance>>(customerService.getBalance(customerId), HttpStatus.OK);
     }
     
-    @PutMapping(value = "/customer/{customerId}/{withdrawAmount}")
+    @PutMapping(value = "/customer/withdraw/{customerId}/{withdrawAmount}")
     public ResponseEntity<Boolean> withdraw(@PathVariable("customerId") Integer customerId,@PathVariable("withdrawAmount") Integer amount) {
     	return new ResponseEntity<Boolean>(customerService.withdraw(customerId, amount), HttpStatus.OK);
     }
     
-    @PutMapping(value = "/customer/{customerId}/{depositAmount}")
+    @PutMapping(value = "/customer/deposit/{customerId}/{depositAmount}")
     public ResponseEntity<Boolean> deposit(@PathVariable("customerId") Integer customerId, @PathVariable("depositAmount") Integer amount) {
     	
     	return new ResponseEntity<Boolean>(customerService.deposit(customerId, amount), HttpStatus.OK);
+    }
+    
+    @PutMapping(value = "/customer/transfer")
+    public ResponseEntity<String> transfer(@RequestBody TransferRequest input) {
+    	
+    	return new ResponseEntity<String>(customerService.transfer(input), HttpStatus.OK);
     }
 	
 }

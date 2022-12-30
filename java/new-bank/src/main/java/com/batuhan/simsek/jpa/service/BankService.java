@@ -2,7 +2,6 @@ package com.batuhan.simsek.jpa.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +9,16 @@ import org.springframework.stereotype.Service;
 import com.batuhan.simsek.jpa.Mapper.AccountEntityToDto;
 import com.batuhan.simsek.jpa.dto.AccountDto;
 import com.batuhan.simsek.jpa.entity.Account;
+import com.batuhan.simsek.jpa.entity.Customer;
 import com.batuhan.simsek.jpa.repository.AccountRepository;
-import com.batuhan.simsek.jpa.repository.Balance;
+import com.batuhan.simsek.jpa.repository.CustomerRepository;
 
 @Service
 public class BankService {
 	
 	@Autowired
 	AccountRepository accountRepository;
-	
+	CustomerRepository customerRepository;
 	public List<AccountDto> getAccounts() {
 
 		AccountEntityToDto converter=new AccountEntityToDto();
@@ -26,10 +26,16 @@ public class BankService {
 
 	}
 	
-	public boolean createAccount(Integer identityNo) {
-		Random random = new Random();
-		int iban = random.nextInt(10000);
-		
+	public Optional<Account> getAccount(Integer identityNo) {
+		return accountRepository.findByCustomerIdentityNo(identityNo);
+	}
+	
+	public Optional<Customer> getCustomer(Integer identityNo) {
+		return customerRepository.findByCustomerIdentityNo(identityNo);
+	}
+	
+	public boolean createAccount(Integer identityNo, Integer iban) {
+
 		Account account = new Account();
 		
 		account.setCustomerIdentityNo(identityNo);

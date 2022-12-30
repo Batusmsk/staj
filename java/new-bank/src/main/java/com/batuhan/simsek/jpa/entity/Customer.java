@@ -36,5 +36,11 @@ public class Customer {
     @Getter
     @Setter
     private String customerFullName;
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", customerIdentityNo=" + customerIdentityNo
+				+ ", customerFullName=" + customerFullName + "]";
+	}
 
+    
 }

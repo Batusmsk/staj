@@ -40,5 +40,12 @@ public class Account {
     @Getter
     @Setter
     private String iban;
+	@Override
+	public String toString() {
+		return "Account [accountId=" + accountId + ", customerIdentityNo=" + customerIdentityNo + ", balance=" + balance
+				+ ", iban=" + iban + "]";
+	}
+    
+    
 
 }

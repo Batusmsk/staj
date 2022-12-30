@@ -6,7 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransferRequest {
-	public Integer customerIdentityNo;
-	public Integer idOfSentCostumer;
+	
+	public String senderIban;
+	
+	public String targetIban;
+	public String targetFullName;
 	public Integer amount;
 }
