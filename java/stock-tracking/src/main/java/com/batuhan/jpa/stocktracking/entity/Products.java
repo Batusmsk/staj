@@ -15,25 +15,32 @@ import lombok.Setter;
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="productsId")
+	@Column(name="productId")
     @Getter
     Integer id;
     
-    @Column(name = "productsName")
+    @Column(name = "productName")
     @Getter
     @Setter
-    String productsName;
+    String productName;
     
-    @Column(name = "productsCountStocks")
+    @Column(name = "productCountStocks")
     @Getter
     @Setter
-    Integer productsCountStocks;
+    Integer productCountStocks;
+    
+    @Column(name = "price")
+    @Getter 
+    @Setter
+    Integer price;
 
 	@Override
 	public String toString() {
-		return "Products [id=" + id + ", productsName=" + productsName + ", productsCountStocks=" + productsCountStocks
-				+ "]";
+		return "Products [id=" + id + ", productName=" + productName + ", productCountStocks=" + productCountStocks
+				+ ", price=" + price + "]";
 	}
+
+
 
 	
 }
