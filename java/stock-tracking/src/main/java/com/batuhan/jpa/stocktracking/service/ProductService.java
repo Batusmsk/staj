@@ -44,10 +44,9 @@ public class ProductService {
 		Optional<Products> product = productsRepository.findById(id);
 		if(!product.isPresent()) return false;
 		if(id < 0) return false;
-		product.get().setProductCountStocks(count);
-		product.get().setProductPrice(price);
-		//System.err.print(count);
-		if(name != null) product.get().setProductName(name);
+		product.get().setProductCountStocks(count == null || count < 0 ? product.get().getProductCountStocks() : count);
+		product.get().setProductPrice(price == null || price < 0 ? product.get().getProductPrice() : price);
+		product.get().setProductName(name == null || name.equals("null") ? product.get().getProductName() : name);
 		productsRepository.save(product.get());
 		
 		return true;
