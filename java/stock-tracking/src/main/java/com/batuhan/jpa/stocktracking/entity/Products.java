@@ -17,7 +17,7 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="productId")
     @Getter
-    Integer id;
+    Integer productId;
     
     @Column(name = "productName")
     @Getter
@@ -29,17 +29,16 @@ public class Products {
     @Setter
     Integer productCountStocks;
     
-    @Column(name = "price")
+    @Column(name = "productPrice")
     @Getter 
     @Setter
-    Integer price;
+    Integer productPrice;
 
 	@Override
 	public String toString() {
-		return "Products [id=" + id + ", productName=" + productName + ", productCountStocks=" + productCountStocks
-				+ ", price=" + price + "]";
+		return "Products [productId=" + productId + ", productName=" + productName + ", productCountStocks="
+				+ productCountStocks + ", productPrice=" + productPrice + "]";
 	}
-
 
 
 	

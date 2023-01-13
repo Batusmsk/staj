@@ -28,7 +28,7 @@ public class ProductService {
 	public Boolean createProduct(ProductDto productDto) { 
 		Products product = new Products();
 		product.setProductName(productDto.getProductName());
-		product.setPrice(productDto.getProductPrice());
+		product.setProductPrice(productDto.getProductPrice());
 		product.setProductCountStocks(productDto.getProductCountStocks());
 		var ret=productsRepository.save(product);
 		return true;
@@ -45,7 +45,7 @@ public class ProductService {
 		if(!product.isPresent()) return false;
 		if(id < 0) return false;
 		product.get().setProductCountStocks(count);
-		product.get().setPrice(price);
+		product.get().setProductPrice(price);
 		//System.err.print(count);
 		if(name != null) product.get().setProductName(name);
 		productsRepository.save(product.get());
@@ -58,9 +58,10 @@ public class ProductService {
 		saleRepository.findAll().forEach(s-> { 
 			SoldOutDto soldOutDto = new SoldOutDto();
 			soldOutDto.setSaleId(s.getSaleId());
-			soldOutDto.setDate(s.getDate());
+			soldOutDto.setSaleDate(s.getSaleDate());
 			soldOutDto.setProductId(s.getProductId());
 			soldOutDto.setProductPrice(s.getProductPrice());
+			soldOutDto.setEmployeeId(s.getEmployees().getEmployeeId());
 			saleList.add(soldOutDto);
 			});
 		return saleList;
@@ -69,7 +70,7 @@ public class ProductService {
 	public boolean productStockUpdate(Integer id, Integer count) {
 		Optional<Products> product = productsRepository.findById(id);
 		if(!product.isPresent()) return false;
-		System.err.print(count);
+		//System.err.print(count);
 		if(count < 0)  {
 			if(product.get().getProductCountStocks() < 1) return false;
 			if(count > product.get().getProductCountStocks()) return false;

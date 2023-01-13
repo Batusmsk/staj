@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class SoldOutDto {
+	private Integer employeeId;
 	private Integer saleId;
-	private String date;
+	private String saleDate;
 	private Integer productPrice;
 	private Integer productId;
 }

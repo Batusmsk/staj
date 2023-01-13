@@ -10,7 +10,7 @@ public class SaleDto {
 	@JsonIgnore
 	private Integer saleId;
 	@JsonIgnore
-	private String date;
+	private String saleDate;
 	@JsonIgnore
 	private Integer productPrice;
 	private Integer productId;

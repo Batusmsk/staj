@@ -25,7 +25,7 @@ public class Sales {
 	Integer saleId;
     @Getter
     @Setter
-	String date;
+	String saleDate;
     @Getter
     @Setter
     Integer productPrice;
@@ -41,7 +41,7 @@ public class Sales {
 
 	@Override
 	public String toString() {
-		return "Sales [saleId=" + saleId + ", date=" + date + ", productPrice=" + productPrice + ", productId="
+		return "Sales [saleId=" + saleId + ", date=" + saleDate + ", productPrice=" + productPrice + ", productId="
 				+ productId + ", employees=" + employees + "]";
 	}
 

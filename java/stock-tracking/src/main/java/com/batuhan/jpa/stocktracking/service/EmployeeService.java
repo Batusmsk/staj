@@ -30,22 +30,25 @@ public class EmployeeService {
 		return employee.toString();
 	}
 	
+	public Optional<Employees> getEmployee(Integer id) {
+		return employeeRepository.findById(id);
+	}
 	public boolean createSale(CreateSaleDto createSaleDto) {
 		Optional<Employees> employee = employeeRepository.findById(createSaleDto.getEmployeeId());
-		System.err.println(employee.get().toString());
 		List<Sales> sale = new ArrayList<Sales>();
         SimpleDateFormat d = new SimpleDateFormat();
         Date date = new Date();
         
 		for(SaleDto createSaleDto1:createSaleDto.getSales()) {
 			Sales sales = new Sales();
+			if(productService.getProduct(createSaleDto1.getProductId()).get().getProductCountStocks() < 1) return false;
 			//sales.setAmount(createSaleDto1.getAmount());
-			sales.setDate(d.format(date));
+			sales.setSaleDate(d.format(date));
 			sales.setProductId(createSaleDto1.getProductId());
-			sales.setProductPrice(productService.getProduct(createSaleDto1.getProductId()).map(p -> p.getPrice()).get());
+			sales.setProductPrice(productService.getProduct(createSaleDto1.getProductId()).map(p -> p.getProductPrice()).get());
 			sales.setEmployees(employee.get());
 			sale.add(sales);
-			productService.productStockUpdate(createSaleDto1.getProductId(), -1);
+			var x = productService.productStockUpdate(createSaleDto1.getProductId(), -1);
 		}
 		employee.get().setSales(sale);
 		employeeRepository.save(employee.get());

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ProductDto {
 	@JsonIgnore
-    Integer id;
+    Integer productId;
     String productName;
     Integer productCountStocks;
     Integer productPrice;
