@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.batuhan.jpa.stocktracking.dto.ShoppingCartDto;
+import com.batuhan.jpa.stocktracking.entity.Customer;
 import com.batuhan.jpa.stocktracking.entity.Products;
 import com.batuhan.jpa.stocktracking.request.CreateCartRequest;
 import com.batuhan.jpa.stocktracking.request.CreateCustomerRequest;
@@ -26,6 +26,10 @@ public class CustomerController {
     @PostMapping(value = "/customer")
 	public boolean createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest){
 		return customerService.createCustomer(createCustomerRequest);
+	}
+    @GetMapping(value = "/customer")
+	public List<Customer> getCustomers(){
+		return customerService.getCustomers();
 	}
     @PostMapping(value = "/cart/create")
 	public boolean createCart(@RequestBody @Valid CreateCartRequest createCartRequest){

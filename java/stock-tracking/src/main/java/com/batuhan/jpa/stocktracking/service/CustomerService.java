@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.batuhan.jpa.stocktracking.dto.CreateSaleDto;
-import com.batuhan.jpa.stocktracking.dto.ProductDto;
+import com.batuhan.jpa.stocktracking.dto.CustomerDto;
 import com.batuhan.jpa.stocktracking.dto.SaleDto;
 import com.batuhan.jpa.stocktracking.dto.ShoppingCartDto;
 import com.batuhan.jpa.stocktracking.entity.Customer;
@@ -48,6 +48,18 @@ public class CustomerService {
 
 	public Optional<Customer> getCustomer(Integer id) {
 		return customerRepository.findById(id);
+	}
+	
+	public List<CustomerDto> getCustomers() {
+		List<CustomerDto> customerList = new ArrayList<>();
+		for(var customer : customerRepository.findAll()) {
+			CustomerDto customerDto = new CustomerDto();
+			customerDto.setCreateDate(customer.getCreateDate());
+			customerDto.setFullName(customer.getFullName());
+			customerDto.setShoppingCart(customer.getShoppingCart());
+			customerList.add(customerDto);
+		}
+		return customerList;
 	}
 
 	public List<ShoppingCartDto> getCustomerCart(Integer customerId, String date) {

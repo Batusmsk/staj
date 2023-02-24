@@ -33,6 +33,9 @@ public class EmployeeService {
 	public Optional<Employees> getEmployee(Integer id) {
 		return employeeRepository.findById(id);
 	}
+	public List<Employees> getEmployees() {
+		return employeeRepository.findAll();
+	}
 	public boolean createSale(CreateSaleDto createSaleDto) {
 		Optional<Employees> employee = employeeRepository.findById(createSaleDto.getEmployeeId());
 		List<Sales> sale = new ArrayList<Sales>();
