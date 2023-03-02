@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.batuhan.jpa.stocktracking.dto.CustomerDto;
 import com.batuhan.jpa.stocktracking.dto.ShoppingCartDto;
-import com.batuhan.jpa.stocktracking.entity.Customer;
 import com.batuhan.jpa.stocktracking.entity.Products;
 import com.batuhan.jpa.stocktracking.request.CreateCartRequest;
 import com.batuhan.jpa.stocktracking.request.CreateCustomerRequest;
@@ -28,7 +28,7 @@ public class CustomerController {
 		return customerService.createCustomer(createCustomerRequest);
 	}
     @GetMapping(value = "/customer")
-	public List<Customer> getCustomers(){
+	public List<CustomerDto> getCustomers(){
 		return customerService.getCustomers();
 	}
     @PostMapping(value = "/cart/create")
