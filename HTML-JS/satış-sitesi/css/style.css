@@ -1,0 +1,134 @@
+
+/* Sayfa stilini sıfırla */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  header {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+}
+
+nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav ul li {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+nav ul li a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 18px;
+}
+
+main {
+	padding: 50px;
+}
+
+section {
+	margin-bottom: 50px;
+}
+
+section h1 {
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+ul li a {
+	display: block;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+.box {
+	display: block;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+.img {
+    display: block;
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	margin-bottom: 10px;
+}
+.xx{
+    display: flex;
+    justify-content: space-between;
+    
+}
+.xx:hover {
+    size: 25px;
+}
+.heart-red {
+    width: 0;
+    color: red;
+    transition: all 0.4s ease;
+    margin-right: 1.2rem;
+    margin-top: -100%;
+}
+.heart-red:hover { 
+    font-size: 20px;
+}
+.heart-black {
+    width: 0;
+    color: black;
+    transition: all 0.4s ease;
+    margin-right: 1.2rem;
+    margin-top: -100%;
+}
+.heart-black:hover { 
+    font-size: 20px;
+}
+.box ul {
+    background-color: red;
+    text-align: center;
+    width: 100%;
+}
+ul li a img {
+	display: block;
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	margin-bottom: 10px;
+}
+
+ul li a h2 {
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+
+ul li a p {
+	font-size: 16px;
+	color: #888;
+	margin-bottom: 0;
+}
+ul i {
+    color: black;
+}
+
+footer {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+}

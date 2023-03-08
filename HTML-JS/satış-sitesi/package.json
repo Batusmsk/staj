@@ -1,0 +1,16 @@
+{
+  "name": "batuhan",
+  "version": "1.0.0",
+  "description": "xxx",
+  "main": "./js/script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "batuhan",
+  "license": "ISC",
+  "dependencies": {
+    "app": "^0.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}

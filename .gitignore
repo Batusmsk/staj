@@ -17,7 +17,12 @@ log/
 .settings
 .springBeans
 .sts4-cache
-
+### JS ###
+node_modules/
+/node_modules/
+node_modules/*
+package-lock.json
+package.json
 ### IntelliJ IDEA ###
 .idea
 *.iws
