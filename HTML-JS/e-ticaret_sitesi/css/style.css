@@ -50,9 +50,6 @@ html {
   ul {
     list-style: none;
   }
-  body {
-    overflow: hidden;
-  }
 
   .nav {
     opacity: 95%;
@@ -159,9 +156,7 @@ input[type="text"]:hover {
 button[type="submit"] {
   font-size: 0;
 }
-.xxxx {
-  display: flex;
-}
+
 .category-bar {
   
   position: relative;
@@ -196,7 +191,6 @@ button[type="submit"] {
   color: var(--light-color);
   margin-left: 35px;
   padding-top: 15px;
-  font-weight: 700px;
   
 }
 .category-content li a {
@@ -207,24 +201,28 @@ button[type="submit"] {
   color: var(--dark-color);
 }
 .products {
-  display: flex;
-  position: relative;
-  top: 8rem;
-  height: 100%;
-  width: 100%;
-  background-color: var(--light-color);
-}
-.products .content {
-  position: fixed;
-  margin-top: 25px;
-  margin-left: 125px;
-  margin-right: 125px;
+  margin-top: 100px;
+  margin-left: 100px;
 }
 .products ul {
-  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 .products li {
-  margin-left: 25px;
+  float: left;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.products h2 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: grey;
+  font-size: 40px;
+  text-align: center;
 }
 .box {
 	display: block;
@@ -262,6 +260,13 @@ button[type="submit"] {
   letter-spacing: 1px;
 }
 
+footer {
+  background-color: var(--dark-color);
+  position: fixed;
+  bottom: 0;  
+  width: 100%;
+  height: 5rem;
+}
 .xx{
   display: flex;
   justify-content: space-between;
@@ -289,13 +294,5 @@ button[type="submit"] {
 }
 .heart-empty:hover {
   font-size: 17px;
-}
-footer {
-  background-color: var(--dark-color);
-  position: fixed;
-  bottom: 0;  
-  width: 100%;
-  height: 5rem;
-
 }
  

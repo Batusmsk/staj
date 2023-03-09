@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.batuhan.jpa.stocktracking.dto.ProductDto;
 import com.batuhan.jpa.stocktracking.entity.Category;
 import com.batuhan.jpa.stocktracking.entity.Products;
 import com.batuhan.jpa.stocktracking.repository.CategoryRepository;
@@ -31,18 +32,43 @@ public class CategoryService {
 		return true;
 	}
 	
-	public List<Products> getCategoryProducts(String category) {
-		List<Products> list = new ArrayList<>();
-		for(var i:productService.getProducts()) {
-			if(i.getCategory().getCategory().equals(category)) {
-				Products products = new Products();
-				products = i;
-				list.add(products);
+	
+	public List<ProductDto> getCategoryProducts(String category) {
+		List<ProductDto> list = new ArrayList<>();
+		String str = category;
+		
+		try {
+		    int num = Integer.parseInt(str);
+			if(!getCategory(num).isPresent()) {
+				list.add(null);
+				return list;
 			}
-			
+		} catch (NumberFormatException e) {
+			if(!getCategory(category).isPresent()) {
+				list.add(null);
+				return list;
+			}
 		}
+		
+
+		
+		for(var i:productService.getProducts()) {
+			if(i.getCategory().getCategory().equals(category) || String.valueOf(i.getCategory().getId()).equals(category)) {
+				ProductDto productDto = new ProductDto();
+				productDto.setProductCountStocks(i.getProductCountStocks());
+				productDto.setProductName(i.getProductName());
+				productDto.setProductId(i.getProductId());
+				productDto.setProductPrice(i.getProductPrice());
+				productDto.setCategory(i.getCategory());
+				list.add(productDto);
+			} else {
+				System.err.println("xxx");
+			}
+		}
+		
 		return list;
 	}
+	
 	public boolean deleteCategory(String name) {
 		Optional<Category> category = categoryRepository.findByCategory(name);
 		categoryRepository.deleteById(category.get().getId());

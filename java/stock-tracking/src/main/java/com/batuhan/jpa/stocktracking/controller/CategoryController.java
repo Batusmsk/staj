@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.batuhan.jpa.stocktracking.dto.ProductDto;
 import com.batuhan.jpa.stocktracking.entity.Category;
-import com.batuhan.jpa.stocktracking.entity.Products;
 import com.batuhan.jpa.stocktracking.service.CategoryService;
 
 @RestController
@@ -28,9 +28,10 @@ public class CategoryController {
 		return categoryService.deleteCategory(name);
 	}
     @GetMapping(value = "/category/{name}")
-    public List<Products> getCategoryProduct(@PathVariable("name") String category) {
+    public List<ProductDto> getCategoryProduct(@PathVariable("name") String category) {
     	return categoryService.getCategoryProducts(category);
     }
+    
     @GetMapping(value = "/category")
     public List<Category> getCategoryList() {
     	return categoryService.getCategoryList();

@@ -1,3 +1,10 @@
+
+
+var xhttp = new XMLHttpRequest();
+
+
+xhttp.open("GET", "http://localhost:8080", true);
+xhttp.send();
 function wait(second) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -53,13 +60,38 @@ async function category() {
     c.innerHTML = table;
 }
 
+
+
+
 products();
 async function products() {
-    const jsonResult = await fetchData('http://localhost:8080/admin/products');
-    const obj = JSON.parse(jsonResult);
-    var p = document.getElementById('product-list');
     var variable = get('category');
+    var p = document.getElementById('product-list');
+    var content = document.getElementById("products");
     var x = "";
+
+    console.log(variable);
+    var jsonResult;
+    if (variable === "all" || null) {
+          jsonResult = await fetchData(`http://localhost:8080/admin/products`);
+         console.log(jsonResult);
+    } else {
+        jsonResult = await fetchData(`http://localhost:8080/category/${variable}`);
+         console.log(jsonResult);
+    }
+
+    if(jsonResult.includes("null")) {
+        
+        x += `<h2>KATEGORI BULUNAMADI!</h2>`;
+        content.innerHTML = x;
+        return;
+    } else if (jsonResult.includes("[]")){
+        x += `<h2>URUN BULUNAMADI!</h2>`;
+        content.innerHTML = x;
+        return;
+    }
+
+    const obj = JSON.parse(jsonResult);
 
     for (var i = 0; i < obj.length; i++) {
         var id = obj[i].productId;
@@ -67,9 +99,7 @@ async function products() {
         var price = obj[i].productPrice;
         var categoryId = obj[i].category.id;
         var categoryName = obj[i].category.category;
-        console.log(categoryId + variable);
-
-        if (variable === "all" || variable == null) {
+        console.log(categoryId + variable);  
             x += `<li>
             <div class="box" id="product-${id}">             
                 <div class="xx">
@@ -81,23 +111,6 @@ async function products() {
                 <h2>Fiyat: ${price} TL</h2>          
             </div>
         </li>`
-        } else {
-            if(categoryId == variable) {
-                x += `<li>
-                <div class="box" id="product-${id}">             
-                    <div class="xx">
-                        <i class="fa fa-shopping-cart cart" aria-hidden="true"></i>
-                        <h1>${name}</h1>
-                        <i class="fa fa-heart-o heart-empty" aria-hidden="true" onClick="heartClick(element)"></i>
-                    </div>
-                    <img src="./img/kazak.jpg">
-                    <h2>Fiyat: ${price} TL</h2>          
-                </div>
-            </li>`   
-            } else {
-                x = '<h2 class="notFound"> ÜRÜN BULUNAMADI!</h2>';
-            }
-        }
     }
     p.innerHTML = x;
 }
