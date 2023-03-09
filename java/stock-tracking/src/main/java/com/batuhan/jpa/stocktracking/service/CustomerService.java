@@ -56,7 +56,7 @@ public class CustomerService {
 			CustomerDto customerDto = new CustomerDto();
 			customerDto.setCreateDate(customer.getCreateDate());
 			customerDto.setFullName(customer.getFullName());
-			customerDto.setShoppingCart(customer.getShoppingCart());
+
 			customerList.add(customerDto);
 		}
 		return customerList;
@@ -121,6 +121,7 @@ public class CustomerService {
 		shoppingCart.setCustomer(getCustomer(input.getCustomerId()).get());
 		shoppingCart.setCartDate(d.format(date));
 		shoppingCart.setProduct(input.getProduct());
+		
 		var product = input.getProduct();
 		for (var item : product) {
 			SaleDto sss = new SaleDto();

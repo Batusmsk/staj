@@ -1,10 +1,13 @@
 package com.batuhan.jpa.stocktracking.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -33,7 +36,12 @@ public class Products {
     @Getter 
     @Setter
     Integer productPrice;
-
+    
+    @Getter
+    @Setter
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
+	Category category;
 	@Override
 	public String toString() {
 		return "Products [productId=" + productId + ", productName=" + productName + ", productCountStocks="

@@ -9,4 +9,5 @@ public class SoldOutDto {
 	private String saleDate;
 	private Integer productPrice;
 	private Integer productId;
+	private String categoryName;
 }

@@ -55,6 +55,7 @@ html {
   }
 
   .nav {
+    opacity: 95%;
     background-color: rgba(71, 146, 165, .9);
     position: fixed;
     top: 0;
@@ -63,6 +64,7 @@ html {
 }
 
 .navbar {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -149,7 +151,7 @@ input[type="text"] {
   transition: width 0.4s ease-in-out;
 }
 
-input[type="text"]:focus {
+input[type="text"]:hover {
   width: 400px;
   outline: none;
 }
@@ -157,15 +159,14 @@ input[type="text"]:focus {
 button[type="submit"] {
   font-size: 0;
 }
-.xxx {
+.xxxx {
   display: flex;
 }
 .category-bar {
-  display: flex;
+  
   position: relative;
   top: 8rem;
-  height: 1000px;
-  width: 10rem;
+  height: 50px;
   background-color: var(--primary-color);
  
 }
@@ -181,29 +182,120 @@ button[type="submit"] {
   left: 6px;
   letter-spacing: 1px;
   font-size: 13px;
-  text-align: center;
   color: var(--light-color);
 }
 .category-content ul {
+  display: flex; 
+  justify-content: center;
   position: relative;
-  top: 25px;
-  text-align: center;
 }
 .category-content li {
-  margin-top: 5px;
   font-size: 15px;
+  font-family: var(--primary-font);
+  font-weight: 700;
+  color: var(--light-color);
+  margin-left: 35px;
+  padding-top: 15px;
   font-weight: 700px;
+  
+}
+.category-content li a {
+  color: var(--light-color);
+  transition: var(--general-transition);
+}
+.category-content li a:hover {
+  color: var(--dark-color);
 }
 .products {
   display: flex;
   position: relative;
   top: 8rem;
-  height: 1000px;
+  height: 100%;
   width: 100%;
-  background-color: var(--dark-color);
+  background-color: var(--light-color);
 }
 .products .content {
   position: fixed;
   margin-top: 25px;
+  margin-left: 125px;
+  margin-right: 125px;
+}
+.products ul {
+  display: flex;
+}
+.products li {
   margin-left: 25px;
 }
+.box {
+	display: block;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+.box .xx h1 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 9px;
+  letter-spacing: 1px;
+  color: var(--dark-color);
+}
+
+.box img {
+  width: 150px;
+  height: 150px;
+}
+
+.box .xx h1 {
+  margin-left: center;
+  text-align: center;
+  font-size: 1vw;
+  margin-top: 2px;
+  letter-spacing: 1px;
+  color: var(--dark-color);
+}
+.box h2 {
+  color: var(--dark-color);
+  font-size: 15px;
+  text-align: center;
+  font-family: var(--secondary-font);
+  font-weight: 700;
+  margin-top: 5px;
+  letter-spacing: 1px;
+}
+
+.xx{
+  display: flex;
+  justify-content: space-between;
+  
+}
+.cart {
+  margin-top: 1px;
+  font-size: 13px;
+  margin-right: 1.2rem;
+  width: 0;
+  color: black;
+  transition: all 0.4s ease;
+}
+.cart:hover {
+  font-size: 15px;
+  color: green;
+}
+.heart-empty {
+  font-size: 15px;
+  margin-right: 1.2rem;
+  width: 0;
+  color: red;
+  transition: all 0.4s ease;
+  
+}
+.heart-empty:hover {
+  font-size: 17px;
+}
+footer {
+  background-color: var(--dark-color);
+  position: fixed;
+  bottom: 0;  
+  width: 100%;
+  height: 5rem;
+
+}
+ 

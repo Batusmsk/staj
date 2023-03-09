@@ -1,5 +1,6 @@
 package com.batuhan.jpa.stocktracking.dto;
 
+import com.batuhan.jpa.stocktracking.entity.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -11,4 +12,5 @@ public class ProductDto {
     String productName;
     Integer productCountStocks;
     Integer productPrice;
+    Category category;
 }

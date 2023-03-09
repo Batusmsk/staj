@@ -14,5 +14,5 @@ public class SaleDto {
 	@JsonIgnore
 	private Integer productPrice;
 	private Integer productId;
-
+	private String categoryName;
 }

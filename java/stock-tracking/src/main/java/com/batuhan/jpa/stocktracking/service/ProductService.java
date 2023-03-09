@@ -6,10 +6,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-  
+
 import com.batuhan.jpa.stocktracking.dto.ProductDto;
 import com.batuhan.jpa.stocktracking.dto.SoldOutDto;
-import com.batuhan.jpa.stocktracking.entity.Employees;
+import com.batuhan.jpa.stocktracking.entity.Category;
 import com.batuhan.jpa.stocktracking.entity.Products;
 import com.batuhan.jpa.stocktracking.repository.EmployeeRepository;
 import com.batuhan.jpa.stocktracking.repository.ProductsRepository;
@@ -24,12 +24,16 @@ public class ProductService {
 	EmployeeRepository employeeRepository;
 	@Autowired
 	SaleRepository saleRepository;
+	@Autowired
+	CategoryService categoryService;
 	
 	public Boolean createProduct(ProductDto productDto) { 
+		Optional<Category> category = categoryService.getCategory(productDto.getCategory().getCategory());
 		Products product = new Products();
 		product.setProductName(productDto.getProductName());
 		product.setProductPrice(productDto.getProductPrice());
 		product.setProductCountStocks(productDto.getProductCountStocks());
+		product.setCategory(category.get());
 		var ret=productsRepository.save(product);
 		return true;
 	}
@@ -40,13 +44,14 @@ public class ProductService {
 		return true;	
 	}	
 	
-	public boolean setProduct(Integer id, Integer count, String name, Integer price) {
+	public boolean setProduct(Integer id, Integer count, String name, Integer price, String category) {
 		Optional<Products> product = productsRepository.findById(id);
 		if(!product.isPresent()) return false;
 		if(id < 0) return false;
 		product.get().setProductCountStocks(count == null || count < 0 ? product.get().getProductCountStocks() : count);
 		product.get().setProductPrice(price == null || price < 0 ? product.get().getProductPrice() : price);
 		product.get().setProductName(name == null || name.equals("null") ? product.get().getProductName() : name);
+		product.get().setCategory(category == null || category.equals("null") ? product.get().getCategory() : categoryService.getCategory(category).get());
 		productsRepository.save(product.get());
 		
 		return true;
@@ -61,6 +66,7 @@ public class ProductService {
 			soldOutDto.setProductId(s.getProductId());
 			soldOutDto.setProductPrice(s.getProductPrice());
 			soldOutDto.setEmployeeId(s.getEmployees().getEmployeeId());
+			soldOutDto.setCategoryName(getProduct(s.getProductId()).get().getCategory().getCategory());
 			saleList.add(soldOutDto);
 			});
 		return saleList;
