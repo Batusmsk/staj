@@ -12,5 +12,6 @@ public class ProductDto {
     String productName;
     Integer productCountStocks;
     Integer productPrice;
+    String productImage;
     Category category;
 }

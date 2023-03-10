@@ -157,155 +157,100 @@ button[type="submit"] {
   font-size: 0;
 }
 
-.category-bar {
-  
-  position: relative;
-  top: 8rem;
-  height: 50px;
-  background-color: var(--primary-color);
- 
+.product-container {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 200px;
+    margin-left: center;
+    box-shadow: 1px 4px 8px rgba(0,0,0,0.4);
 }
-.category-content hr {
-  position: relative;
-  top: 18px;
-  left: 10%;
-  width: 80%;
-}
-.category-content h1{
-  position: relative;
-  top: 7px;
-  left: 6px;
-  letter-spacing: 1px;
-  font-size: 13px;
-  color: var(--light-color);
-}
-.category-content ul {
-  display: flex; 
-  justify-content: center;
-  position: relative;
-}
-.category-content li {
-  font-size: 15px;
-  font-family: var(--primary-font);
-  font-weight: 700;
-  color: var(--light-color);
-  margin-left: 35px;
-  padding-top: 15px;
-  
-}
-.category-content li a {
-  color: var(--light-color);
-  transition: var(--general-transition);
-}
-.category-content li a:hover {
-  color: var(--dark-color);
-}
-.products {
-  margin-top: 100px;
-  margin-left: 100px;
-}
-.products ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-.products li {
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.4);
-  margin-right: 10px;
-  margin-bottom: 20px;
-  
-  margin-top: 25px;
-  margin-left: 30px;
-  border-radius: 5px;
-  padding: 25px;
-  float: left;
-  transition: transform 0.5s;
 
-}
-.products li:hover {
-  transform: scale(1.1);
-}
-.products h2 {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  color: grey;
-  font-size: 40px;
-  text-align: center;
-}
-.box {
-	display: block;
+.product-image img{
+    display: block;
 	padding: 10px;
 	border: 1px solid #ccc;
-}
-.box .xx h1 {
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 9px;
-  letter-spacing: 1px;
-  color: var(--dark-color);
+    width: 350px;
+    height: 350px;
 }
 
-.box img {
-  width: 150px;
-  height: 150px;
+.content {   
+    display: flex;
+    margin: 0 auto; 
 }
+.product-features {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+.product-name {
+    letter-spacing: 2px;
+    color: var(--dark-color);
+    font-family: var(--secondary-font);
+    font-weight: 900;
+    font-size: 40px;
+}
+.list-price {
+    display: flex;
+}
+.list-price li .price {
+    margin-left: 8px;
+    color: var(--dark-color);
+    font-family: var(--secondary-font);
+    font-size: 20px;
+}
+.list-price li .tl { 
+    color: var(--dark-color);
+    font-family: var(--secondary-font);
+    font-weight: 700;
+    font-size: 15px;
+    margin-left: 2px;
+}
+.button-list {
+    display: flex;
 
-.box .xx h1 {
-  margin-left: center;
-  text-align: center;
-  font-size: 15px;
-  margin-top: 2px;
-  letter-spacing: 1px;
-  color: var(--dark-color);
 }
-.box h2 {
-  color: var(--dark-color);
-  font-size: 15px;
-  text-align: center;
-  font-family: var(--secondary-font);
-  font-weight: 700;
-  margin-top: 5px;
-  letter-spacing: 1px;
+.button-list h1 {
+    color: var(--dark-color);
+    font-size: 20px;
 }
+.product-features ul .heart-empty {
+    margin-left: 20px;
+    color: red;
+    font-size: 20px;
+    margin-top: 20px;
+}
+input[type=number] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
 
-footer {
-  background-color: var(--dark-color);
-  position: fixed;
-  bottom: 0;  
-  width: 100%;
-  height: 5rem;
+  .properties .container{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 25px;
+    margin-left: center;
+    box-shadow: 1px 4px 8px rgba(0,0,0,0.4);
+  }
+  .properties ul {
+    display: flex;
+    align-items: center;
+  }
+  .x {
+    text-align: center;
+  }
+  .x h2{
+    font-size: 15px;
+    color: var(--dark-color);
+    padding-left: 10px;
+  }
+.headers li h2{
+    font-size: 20px;
+    padding-left: 25px;
+    letter-spacing: 2px;
 }
-.xx{
-  display: flex;
-  justify-content: space-between;
-  
-}
-.cart {
-  margin-top: 1px;
-  font-size: 13px;
-  margin-right: 1.2rem;
-  width: 0;
-  color: black;
-  transition: all 0.4s ease;
-}
-.cart:hover {
-  font-size: 15px;
-  color: green;
-}
-.heart-empty {
-  font-size: 15px;
-  margin-right: 1.2rem;
-  width: 0;
-  color: red;
-  transition: all 0.4s ease;
-  
-}
-.heart-empty:hover {
-  font-size: 17px;
-}
-.hidden {
-  display: none;
-}
- 

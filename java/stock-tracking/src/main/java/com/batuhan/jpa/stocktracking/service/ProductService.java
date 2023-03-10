@@ -34,6 +34,7 @@ public class ProductService {
 		product.setProductPrice(productDto.getProductPrice());
 		product.setProductCountStocks(productDto.getProductCountStocks());
 		product.setCategory(category.get());
+		product.setProductImage(productDto.getProductImage());
 		var ret=productsRepository.save(product);
 		return true;
 	}
@@ -44,7 +45,7 @@ public class ProductService {
 		return true;	
 	}	
 	
-	public boolean setProduct(Integer id, Integer count, String name, Integer price, String category) {
+	public boolean setProduct(Integer id, Integer count, String name, Integer price, String category, String image) {
 		Optional<Products> product = productsRepository.findById(id);
 		if(!product.isPresent()) return false;
 		if(id < 0) return false;
@@ -52,6 +53,7 @@ public class ProductService {
 		product.get().setProductPrice(price == null || price < 0 ? product.get().getProductPrice() : price);
 		product.get().setProductName(name == null || name.equals("null") ? product.get().getProductName() : name);
 		product.get().setCategory(category == null || category.equals("null") ? product.get().getCategory() : categoryService.getCategory(category).get());
+		product.get().setProductImage(image == null || image.equals("null") ? product.get().getProductImage() : image);
 		productsRepository.save(product.get());
 		
 		return true;
@@ -90,6 +92,18 @@ public class ProductService {
 		
 		
 	}
+	public List<Products> findByName(String name) {
+		List<Products> list = new ArrayList<>();
+		for(var i:getProducts()) {
+			if(i.getProductName().toLowerCase().contains(name.toLowerCase())) {
+				Products product = new Products();
+				product = i;
+				list.add(product);
+			}
+		}
+		return list;
+	}
+	
 	public Optional<Products> getProduct(Integer id) {
 		return productsRepository.findById(id);
 	}

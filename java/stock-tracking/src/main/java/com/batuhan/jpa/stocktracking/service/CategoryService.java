@@ -60,10 +60,9 @@ public class CategoryService {
 				productDto.setProductId(i.getProductId());
 				productDto.setProductPrice(i.getProductPrice());
 				productDto.setCategory(i.getCategory());
+				productDto.setProductImage(i.getProductImage());
 				list.add(productDto);
-			} else {
-				System.err.println("xxx");
-			}
+			} 
 		}
 		
 		return list;

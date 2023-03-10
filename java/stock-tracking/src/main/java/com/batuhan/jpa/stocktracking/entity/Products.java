@@ -31,12 +31,13 @@ public class Products {
     @Getter
     @Setter
     Integer productCountStocks;
-    
     @Column(name = "productPrice")
     @Getter 
     @Setter
     Integer productPrice;
-    
+    @Getter
+    @Setter
+    String productImage;
     @Getter
     @Setter
     @ManyToOne(cascade = CascadeType.ALL)

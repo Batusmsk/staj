@@ -2,9 +2,6 @@
 
 var xhttp = new XMLHttpRequest();
 
-
-xhttp.open("GET", "http://localhost:8080", true);
-xhttp.send();
 function wait(second) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -17,15 +14,7 @@ function get(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
         return decodeURIComponent(name[1]);
 }
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        var data = await response.text();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
+
 async function addProduct(id, name, price, category) {
     var c = document.getElementById('product-list');
     var variable = get('category');
@@ -60,57 +49,87 @@ async function category() {
     c.innerHTML = table;
 }
 
+const searchInput = document.getElementById('search-box');
+searchInput.addEventListener('keydown', handleSearchKeydown);
 
-
+function handleSearchKeydown(event) {
+  if (event.code === 'Enter' || event.key === 'Enter') {
+    event.preventDefault();
+    products();
+  }
+}
 
 products();
 async function products() {
     var variable = get('category');
-    var p = document.getElementById('product-list');
-    var content = document.getElementById("products");
-    var x = "";
 
     console.log(variable);
-    var jsonResult;
-    if (variable === "all" || null) {
-          jsonResult = await fetchData(`http://localhost:8080/admin/products`);
-         console.log(jsonResult);
-    } else {
+    let jsonResult;
+
+    if (searchInput.value.length > 0 && searchInput.value !== "") {
+        console.log(searchInput.value, searchInput.value.length);
+        jsonResult = await fetchData(`http://localhost:8080/admin/product/findbyname/${searchInput.value}`);
+        console.log(jsonResult);
+
+    } else if(variable === "all" || variable === null){
+        jsonResult = await fetchData(`http://localhost:8080/admin/products`);
+    }else {
         jsonResult = await fetchData(`http://localhost:8080/category/${variable}`);
-         console.log(jsonResult);
     }
 
-    if(jsonResult.includes("null")) {
-        
-        x += `<h2>KATEGORI BULUNAMADI!</h2>`;
-        content.innerHTML = x;
+    var error = await document.getElementById("error");
+    var errorClass = document.querySelector(".error");
+    var productListClass = document.querySelector(".product-list");
+    if(jsonResult.includes("null")) {   
+        errorClass.classList.remove('hidden');
+        productListClass.classList.add('hidden');
+        error.innerText ="KATEGORI BULUNAMADI!";
         return;
     } else if (jsonResult.includes("[]")){
-        x += `<h2>URUN BULUNAMADI!</h2>`;
-        content.innerHTML = x;
+        errorClass.classList.remove('hidden');
+        productListClass.classList.add('hidden');
+        error.innerText ="URUN BULUNAMADI!";
         return;
+    } else {
+        productListClass.classList.remove('hidden');
+        errorClass.classList.add('hidden');
     }
 
     const obj = JSON.parse(jsonResult);
-
-    for (var i = 0; i < obj.length; i++) {
-        var id = obj[i].productId;
-        var name = obj[i].productName;
-        var price = obj[i].productPrice;
-        var categoryId = obj[i].category.id;
-        var categoryName = obj[i].category.category;
-        console.log(categoryId + variable);  
-            x += `<li>
+    let table = "";
+    for (let i = 0; i < obj.length; i++) {
+        let id = obj[i].productId;
+        let name = obj[i].productName;
+        let price = obj[i].productPrice;
+        let categoryId = obj[i].category.id;
+        let categoryName = obj[i].category.category;
+        let image = obj[i].productImage;
+        let index = image.split("/");
+            table += `<li>
             <div class="box" id="product-${id}">             
                 <div class="xx">
                     <i class="fa fa-shopping-cart cart" aria-hidden="true"></i>
                     <h1>${name}</h1>
                     <i class="fa fa-heart-o heart-empty" aria-hidden="true" onClick="heartClick(element)"></i>
                 </div>
-                <img src="./img/kazak.jpg">
+                <img src="./img/products/${index[12]}">
                 <h2>Fiyat: ${price} TL</h2>          
             </div>
         </li>`
+        
     }
-    p.innerHTML = x;
+    var p = await document.getElementById('product-list');
+     p.innerHTML = table;
+
+}
+
+
+async function fetchData(url) {
+    try {
+        const response = await fetch(url);
+        var data = await response.text();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
 }
