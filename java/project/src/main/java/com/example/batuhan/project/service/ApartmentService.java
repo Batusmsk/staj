@@ -2,6 +2,7 @@ package com.example.batuhan.project.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,24 +30,23 @@ public class ApartmentService {
 			apartment.setApartmentNo(apartmentDto.getApartmentNo());
 			apartment.setBaseArea(apartmentDto.getBaseArea());
 			apartment.setFloor(apartmentDto.getFloor());
-			apartment.setBlockName(apartmentDto.getBlockName());
+			apartment.setBlock(blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).get());
 			apartmentRepository.save(apartment);
 			return "succesfully";
 		}
 		return "The square meters of the apartments located in the block exceed the square meter of the block.";
-
 	}
 	public List<ApartmentDto> aptOnTheFloor(String blockName, Integer floor) {
 		List<ApartmentDto> list = new ArrayList<>();
 		if(!blockService.getBlock(blockName).isPresent()) return list;
 		for(var i:apartmentRepository.findAll()) {
 			
-			if((blockService.getBlock(blockName).get().getNumberOfFloors()) <= floor && i.getFloor().equals(floor)) {
+			if(i.getBlock().getBlockName().toLowerCase().equals(blockName.toLowerCase()) && i.getFloor().equals(floor)) {
 				
 				ApartmentDto apartmentDto = new ApartmentDto();
 				apartmentDto.setApartmentNo(i.getApartmentNo());
 				apartmentDto.setBaseArea(i.getBaseArea());
-				apartmentDto.setBlockName(blockService.getBlock(i.getBlockName()).get().getBlockName());
+				apartmentDto.setBlockName(i.getBlock().getBlockName());
 				apartmentDto.setFloor(i.getFloor());
 				list.add(apartmentDto);				
 			}
@@ -56,6 +56,42 @@ public class ApartmentService {
 	
 	public List<Apartment> getApartments() {
 		return apartmentRepository.findAll();
+	}
+	
+	public Optional<Apartment> getApartment(String blockName, Integer apartmentId) {
+		for(var i:getApartments()) {
+			if(i.getApartmentNo()== apartmentId && i.getBlock().getBlockName().equals(blockName)) {
+				return Optional.of(i);
+			}
+		}
+		return Optional.empty();
+	}
+	public List<Apartment> findApartmentsById(Integer id) {
+		List<Apartment> list = new ArrayList<>();
+		for(var i:getApartments()) {
+			if(i.getApartmentNo() == id) {
+				list.add(i);
+			}
+		}
+		return list;
+	}
+	
+	public List<Apartment> findApartmentsByBlockName(String block) {
+		List<Apartment> list = new ArrayList<>();
+		for(var i:getApartments()) {
+			if(i.getBlock().getBlockName().equals(block)) {
+				list.add(i);
+			}
+		}
+		return list;
+	}
+	
+	public String deleteApartment(String blockName, Integer apartmentNo) {
+		if(getApartment(blockName, apartmentNo).isPresent()) {
+			apartmentRepository.delete(getApartment(blockName, apartmentNo).get());
+			return "succesfully";
+		}
+		return "Apartment not found";
 	}
 
 }
