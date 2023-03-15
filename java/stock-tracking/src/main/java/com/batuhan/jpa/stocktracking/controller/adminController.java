@@ -43,7 +43,7 @@ public class adminController {
 		return productService.deleteProduct(id);
     }
     @PutMapping(value = "/admin/product/set/{productId}/{count}/{name}/{price}/{category}/{image}")
-    public boolean updateProduct(@PathVariable("productId") Integer id, @PathVariable("count") Integer count, @PathVariable("name") String name, @PathVariable("price") Integer price, @PathVariable("category") String category, @PathVariable("image") String image) { 
+    public boolean updateProduct(@PathVariable("productId") Integer id, @PathVariable("count") Integer count, @PathVariable("name") String name, @PathVariable("price") Integer price, @PathVariable("image") String image, @PathVariable("category") String category) { 
 		return productService.setProduct(id,count,name, price, category, image);
     }
     @GetMapping(value = "admin/product/findbyname/{name}")
