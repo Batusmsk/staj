@@ -5,11 +5,14 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.OneToOne;
 
+import com.example.batuhan.project.keys.ApartmentKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
 @Data
-@IdClass(MyKey.class)
+@IdClass(ApartmentKey.class)
 public class Apartment {
 	
 	@Id
@@ -17,10 +20,12 @@ public class Apartment {
     
 	Integer floor;
 	Integer baseArea;
-	
+	@JsonIgnore
+	private String purchaseDate;
 	@Id
 	@OneToOne
-    //private String blockName;
     private Block block;
+	@JsonIgnore
+	private String email;
 }
 

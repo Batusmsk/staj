@@ -29,7 +29,7 @@ public class BlockService {
 			block.setTotalApartmentCount(createBlockDto.getTotalApartmentCount());
 			block.setBaseArea(createBlockDto.getBaseArea());
 			blockRepository.save(block);
-			return "succesfuly";
+			return "successfully";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -40,7 +40,7 @@ public class BlockService {
 			for(var i:blockRepository.findAll()) {
 				if(i.getBlockName().toLowerCase().equals(blockName.toLowerCase())) {
 					blockRepository.delete(i);
-					return "succesfully";
+					return "successfully";
 				}
 			}
 			return "Could not find such a block";

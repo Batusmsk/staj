@@ -21,6 +21,7 @@ public class ApartmentService {
 	public String createApartment(ApartmentDto apartmentDto) {
 		if(!blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).isPresent()) return "No block was found.";
 		if((blockService.getBlock(apartmentDto.getBlockName()).get().getNumberOfFloors()) < apartmentDto.getFloor()) return "floor area excess";
+		if(getApartment(apartmentDto.getBlockName(), apartmentDto.getApartmentNo()).isPresent()) return "there cannot be two apartments with the same number in one block";
 		Integer baseArea = apartmentDto.getBaseArea();
 		for(var i:aptOnTheFloor(apartmentDto.getBlockName(), apartmentDto.getFloor())) {
 			baseArea += i.getBaseArea();
@@ -32,7 +33,7 @@ public class ApartmentService {
 			apartment.setFloor(apartmentDto.getFloor());
 			apartment.setBlock(blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).get());
 			apartmentRepository.save(apartment);
-			return "succesfully";
+			return "successfully";
 		}
 		return "The square meters of the apartments located in the block exceed the square meter of the block.";
 	}
@@ -89,9 +90,13 @@ public class ApartmentService {
 	public String deleteApartment(String blockName, Integer apartmentNo) {
 		if(getApartment(blockName, apartmentNo).isPresent()) {
 			apartmentRepository.delete(getApartment(blockName, apartmentNo).get());
-			return "succesfully";
+			return "successfully";
 		}
 		return "Apartment not found";
 	}
+	
+    public void saveOrUpdateApartment(Apartment apartment) {
+        apartmentRepository.save(apartment);
+    }
 
 }
