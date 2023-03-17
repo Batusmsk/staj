@@ -8,5 +8,4 @@ public class PersonDto {
 	private String phoneNumber;
 	private String name;
 	private String lastName;
-	private Integer debt;
 }

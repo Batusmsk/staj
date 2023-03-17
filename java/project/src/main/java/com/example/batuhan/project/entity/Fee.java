@@ -1,7 +1,5 @@
 package com.example.batuhan.project.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,18 +8,20 @@ import javax.persistence.OneToOne;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class Payment {
+@Entity
+public class Fee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	Integer paymentAmount;
-	String paymentDate;
+	@OneToOne
+	private Person person;
+	@OneToOne
+	private Apartment apartment;
+	private String feeDate;
+	private Integer feeAmount;
+	private Boolean status;
+	private Integer paidAmount;
 	
-	@OneToOne
-	Person person;
-	@OneToOne
-	Fee fee;
 }

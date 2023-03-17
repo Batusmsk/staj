@@ -20,6 +20,7 @@ import com.example.batuhan.project.service.ApartmentService;
 @RestController
 public class ApartmentController {
 	@Autowired
+	
 	ApartmentService apartmentService;
 	@PostMapping(value = "/apartment/createApartment")
 	public String createApartment(@RequestBody ApartmentDto apartment) {
@@ -39,7 +40,10 @@ public class ApartmentController {
 	public List<Apartment> getApartment(@PathVariable("apartmentId") Integer apartmentId) {
 		return apartmentService.findApartmentsById(apartmentId);
 	}
-	
+	@GetMapping(value = "/apartment/getApartments")
+	public List<Apartment> getApartments() {
+		return apartmentService.getApartments();
+	}
 	@GetMapping(value = "/apartment/findApartmentsByBlockName/{blockName}")
 	public List<Apartment> findApartmentsByBlockName(@PathVariable("blockName") String blockName) {
 		return apartmentService.findApartmentsByBlockName(blockName);

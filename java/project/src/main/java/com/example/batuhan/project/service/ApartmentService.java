@@ -33,9 +33,9 @@ public class ApartmentService {
 			apartment.setFloor(apartmentDto.getFloor());
 			apartment.setBlock(blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).get());
 			apartmentRepository.save(apartment);
-			return "successfully";
+			return "Daire oluşturuldu";
 		}
-		return "The square meters of the apartments located in the block exceed the square meter of the block.";
+		return "Katta yer alan dairelerin metrekareleri bloğun metrekaresini aşıyor.";
 	}
 	public List<ApartmentDto> aptOnTheFloor(String blockName, Integer floor) {
 		List<ApartmentDto> list = new ArrayList<>();
@@ -90,9 +90,9 @@ public class ApartmentService {
 	public String deleteApartment(String blockName, Integer apartmentNo) {
 		if(getApartment(blockName, apartmentNo).isPresent()) {
 			apartmentRepository.delete(getApartment(blockName, apartmentNo).get());
-			return "successfully";
+			return "Daire silindi";
 		}
-		return "Apartment not found";
+		return "Daire bulunamadı";
 	}
 	
     public void saveOrUpdateApartment(Apartment apartment) {

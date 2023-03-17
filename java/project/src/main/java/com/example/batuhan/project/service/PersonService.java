@@ -22,6 +22,8 @@ public class PersonService {
 	BlockService blockService;
 	@Autowired
 	ApartmentService apartmentService;
+	@Autowired
+	FeeService feeService;
 
 	public String createPerson(CreatePersonDto dto) {
 		Person person = new Person();
@@ -30,7 +32,7 @@ public class PersonService {
 		person.setEmail(dto.getEmail());
 		person.setPhoneNumber(dto.getPhoneNumber());
 		personRepository.save(person);
-		return "succesfully";
+		return "Kullanıcı oluşturuldu";
 	}
 	public Optional<Person> getPerson(String mail) {
 		return personRepository.findById(mail);
@@ -44,15 +46,14 @@ public class PersonService {
 			dto.setLastName(i.getLastName());
 			dto.setPhoneNumber(i.getPhoneNumber());
 			dto.setEmail(i.getEmail());
-			dto.setDebt(i.getDebt());
 			list.add(dto);
 		}
 		return list;
 	}
 	public String addApartmentToPerson(PurchaseApartmentDto dto) {
-		if(!apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).isPresent()) return "apartment not found";
-		if(getPerson(dto.getEmail()).isPresent() == false) return "Person not found";
-		if(apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate() != null && apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate().length() > 3) return "The apartment has already been purchased.";
+		if(!apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).isPresent()) return "Apartman bulunamadı";
+		if(getPerson(dto.getEmail()).isPresent() == false) return "Kullanıcı bulunamadı";
+		if(apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate() != null && apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate().length() > 3) return "Daire zaten satın alındı.";
 		Optional<Person> person = getPerson(dto.getEmail());
 		List<Apartment> list = person.get().getPersonApartments();	
 		Optional<Apartment> apartment = apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo());
@@ -61,7 +62,7 @@ public class PersonService {
 		person.get().setPersonApartments(list);
 		personRepository.save(person.get());
 		apartmentService.saveOrUpdateApartment(apartment.get());
-		return "successfully";
+		return "Başarıyla apartmana kullanıcı eklendi";
 	}
 	
     public List<Apartment> findApartmentsByPerson(String email) {
@@ -71,16 +72,28 @@ public class PersonService {
     }
     
 	public Optional<Person> findOwnerTheApartment(String blockName, Integer apartmentNo) {
+		try {
 		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return Optional.empty();
+		if(!getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail()).isPresent()) return null;
+		
 		Optional<Person> person = getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail());
-		return person;
+			return person;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public String removeApartmentToPerson(String email, String blockName, Integer apartmentNo) {
-		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return "apartment not found";
-		if(getPerson(email).isPresent() == false) return "Person not found";
-		if(getPerson(email).get().getDebt() > 0) return "The apartment cannot be vacated due to outstanding dues.";
-		if(apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate() == null || apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate().length() < 4) return "this apartment has not been purchased yet.";
+		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return "Apartman bulunamadı";
+		if(getPerson(email).isPresent() == false) return "Kullanıcı bulunamadı";
+		
+		for(var i:feeService.findByPerson(email)) {
+			if(i.getStatus() == true) {
+				return "Ödenmemiş borçlar nedeniyle daire boşaltılamaz.";
+			}
+		}
+		
+		if(apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate() == null || apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate().length() < 4) return "Bu daire henüz satın alınmadı";
 		Optional<Apartment> apartment = apartmentService.getApartment(blockName, apartmentNo);
 		Optional<Person> person = getPerson(email);
 		List<Apartment> list = person.get().getPersonApartments();
@@ -94,7 +107,7 @@ public class PersonService {
 		personRepository.save(person.get());
 		apartmentService.saveOrUpdateApartment(apartment.get());
 		
-		return "successfully";
+		return "Kullanıcı apartmandan kaldırıldı";
 	}
 }
  

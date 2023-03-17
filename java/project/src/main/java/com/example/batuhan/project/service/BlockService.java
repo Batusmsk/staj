@@ -20,7 +20,7 @@ public class BlockService {
 		try {
 			for (var i : blockRepository.findAll()) {
 				if (i.getBlockName().toLowerCase().equals(createBlockDto.getBlockName().toLowerCase())) {
-					return "Such a block is available.";
+					return "Bu isimde bir blok mevcut";
 				}
 			}
 			Block block = new Block();
@@ -29,7 +29,7 @@ public class BlockService {
 			block.setTotalApartmentCount(createBlockDto.getTotalApartmentCount());
 			block.setBaseArea(createBlockDto.getBaseArea());
 			blockRepository.save(block);
-			return "successfully";
+			return "Blok oluşturuldu";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -40,10 +40,10 @@ public class BlockService {
 			for(var i:blockRepository.findAll()) {
 				if(i.getBlockName().toLowerCase().equals(blockName.toLowerCase())) {
 					blockRepository.delete(i);
-					return "successfully";
+					return "Blok silindi";
 				}
 			}
-			return "Could not find such a block";
+			return "Böyle bir blok bulunamadı";
 		} catch(Exception e) {
 			return e.getMessage();
 		}

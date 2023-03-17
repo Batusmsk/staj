@@ -19,7 +19,6 @@ public class Person {
 	private String phoneNumber;
 	private String name;
 	private String lastName;
-	private Integer debt;
 	
    @OneToMany
    @JoinColumn(name = "email")

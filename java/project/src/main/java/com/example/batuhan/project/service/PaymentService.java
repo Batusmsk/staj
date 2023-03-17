@@ -1,5 +1,7 @@
 package com.example.batuhan.project.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +20,26 @@ public class PaymentService {
 	PersonService personService;
 	@Autowired
 	PersonRepository personRepository;
+	@Autowired
+	FeeService feeService;
 	
-	public String createPayment(Integer amount,String date, String email) {
-		if(!personService.getPerson(email).isPresent()) return "person not found";
-		Optional<Person> person = personService.getPerson(email);
-		if(person.get().getDebt() < amount) return "The person wants to pay a debt smaller than the debt you wanted to get paid";
-		Integer debt = person.get().getDebt();
-		person.get().setDebt(debt - amount);
-		personRepository.save(person.get());
-		
-		Payment payment = new Payment();
-		payment.setPaymentAmount(amount);
-		payment.setPaymentDate(date);
-		payment.setPerson(person.get());
-		paymentRepository.save(payment);
-		return "successfully";
-	}
+	public boolean createPayment(Integer id, String email, Integer amount) {
+		try {
+			Date date = new Date();
+			SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
+			Optional<Person> person = personService.getPerson(email);
+			Payment payment = new Payment();
+			payment.setFee(feeService.getFee(id).get());
+			payment.setPaymentAmount(amount);
+			payment.setPaymentDate(ft.format(date));
+			payment.setPerson(personService.getPerson(email).get());
+			paymentRepository.save(payment);
+			
+			return true;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
 
+	}
 }
