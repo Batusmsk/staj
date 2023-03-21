@@ -45,4 +45,8 @@ public class PaymentService {
 	public List<Payment> getPayments() {
 		return paymentService.findAll();
 	}
+		public Payment getPayment(Integer id) {
+		if(!paymentService.findById(id).isPresent()) return null;
+		return paymentService.findById(id);
+	}
 }
