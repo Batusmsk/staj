@@ -42,4 +42,7 @@ public class PaymentService {
 		}
 
 	}
+	public List<Payment> getPayments() {
+		return paymentService.findAll();
+	}
 }
