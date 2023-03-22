@@ -7,5 +7,5 @@ import com.example.batuhan.project.entity.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, String>{
-
+	public Person findByEmail(String email);
 }

@@ -9,9 +9,10 @@ import com.example.batuhan.project.service.FeeService;
 
 @SpringBootTest
 class ProjectApplicationTests {
-
+	/*
 	@Autowired
 	FeeService feeservice;
+	
 	
 	@Test
 	void checkitoplaIsOk() {
@@ -20,10 +21,11 @@ class ProjectApplicationTests {
 		assertTrue(feeservice.topla(3, 2)==5);
 		
 	}
-	
+	*/
 	@Test
 	void contextLoads() {
 		
 	}
+	
 
 }

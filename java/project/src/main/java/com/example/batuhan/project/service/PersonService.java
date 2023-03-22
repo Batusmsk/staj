@@ -1,18 +1,24 @@
 package com.example.batuhan.project.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.BeanDefinitionDsl.Role;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.batuhan.project.dto.CreatePersonDto;
+import com.example.batuhan.project.auth.UserDetailsService;
 import com.example.batuhan.project.dto.PersonDto;
 import com.example.batuhan.project.dto.PurchaseApartmentDto;
 import com.example.batuhan.project.entity.Apartment;
 import com.example.batuhan.project.entity.Person;
+import com.example.batuhan.project.entity.PersonRole;
 import com.example.batuhan.project.repository.PersonRepository;
+import com.example.batuhan.project.request.RegisterRequest;
 
 @Service
 public class PersonService {
@@ -24,13 +30,22 @@ public class PersonService {
 	ApartmentService apartmentService;
 	@Autowired
 	FeeService feeService;
-
-	public String createPerson(CreatePersonDto dto) {
+	@Autowired
+	UserDetailsService userDetailsService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+	public String createPerson(RegisterRequest request) {
+		
+		Set<PersonRole> roles = new HashSet<>();
+		roles.add(PersonRole.USER);
+		
 		Person person = new Person();
-		person.setName(dto.getName());
-		person.setLastName(dto.getLastName());
-		person.setEmail(dto.getEmail());
-		person.setPhoneNumber(dto.getPhoneNumber());
+		person.setName(request.getName());
+		person.setLastName(request.getLastName());
+		person.setEmail(request.getEmail());
+		person.setPassword(passwordEncoder.encode(request.getPassword()));
+		person.setRoles(roles);
+		person.setPhoneNumber(request.getPhoneNumber());
 		personRepository.save(person);
 		return "Kullanıcı oluşturuldu";
 	}
