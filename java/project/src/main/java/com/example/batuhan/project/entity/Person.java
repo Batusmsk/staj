@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -22,6 +24,7 @@ public class Person {
 	
 	@Id
 	private String email;
+	@JsonIgnore
 	private String password;
 	
 	private String phoneNumber;

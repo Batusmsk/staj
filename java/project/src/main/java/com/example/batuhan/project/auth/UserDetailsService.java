@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.batuhan.project.entity.Person;
 import com.example.batuhan.project.repository.PersonRepository;
 import com.example.batuhan.project.service.PersonService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService{
@@ -33,11 +34,17 @@ public class UserDetailsService implements org.springframework.security.core.use
 	    	try {
 		        Person person = personService.getPerson(email).get();
 		        
-		        return User.builder()
+		        var user= User.builder()
 		          .username(person.getEmail())
 		          .password(person.getPassword())
 		          .roles(person.getRoles().stream().map(Enum::name).toArray(String[]::new))
 		          .build();
+		        
+		        ObjectMapper mapper=new ObjectMapper();
+		        
+		        System.out.println(mapper.writeValueAsString(user));
+		        return user;
+		        
 	    	} catch (Exception e) {
 	    		System.err.println(e);
 	    		return null;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.batuhan.project.dto.FeeDto;
+import com.example.batuhan.project.request_response.FeeRequest;
 import com.example.batuhan.project.service.FeeService;
 
 @RestController
@@ -19,8 +20,8 @@ public class FeeController {
 	FeeService feeService;
 	
 	@PostMapping(value = "/fee/createFee")
-	public String createFee(@RequestBody FeeDto feeDto) {
-		return feeService.createFee(feeDto);
+	public String createFee(@RequestBody FeeRequest request) {
+		return feeService.createFee(request);
 	}
 	@GetMapping(value = "/fee/findByPerson/{email}")
 	public List<FeeDto> findByPerson(@PathVariable("email") String email) {

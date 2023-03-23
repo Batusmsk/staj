@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.batuhan.project.dto.ApartmentDto;
@@ -27,29 +28,29 @@ public class ApartmentController {
 		return apartmentService.createApartment(apartment);
 	}
 	//aptOnTheFloor
-	@GetMapping(value = "/apartment/aptOnTheFloor/{block}/{floor}")
-	public ResponseEntity<List<ApartmentDto>> getAptOnTheFloor(@PathVariable("block") String block, @PathVariable("floor") Integer floor) {
+	@GetMapping(value = "/apartment/aptOnTheFloor")
+	public ResponseEntity<List<ApartmentDto>> getAptOnTheFloor(@RequestParam String block, @RequestParam Integer floor) {
 		return new ResponseEntity<List<ApartmentDto>>(apartmentService.aptOnTheFloor(block, floor), HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/apartment/getApartment/{blockName}/{apartmentId}")
-	public Optional<Apartment> getApartment(@PathVariable("blockName") String blockName, @PathVariable("apartmentId") Integer apartmentId) {
+	@GetMapping(value = "/apartment/getApartment")
+	public Optional<Apartment> getApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
 		return apartmentService.getApartment(blockName, apartmentId);
 	}
-	@GetMapping(value = "/apartment/findApartmentsById/{apartmentId}")
-	public List<Apartment> getApartment(@PathVariable("apartmentId") Integer apartmentId) {
+	@GetMapping(value = "/apartment/findApartmentsById")
+	public List<ApartmentDto> getApartment(@RequestParam Integer apartmentId) {
 		return apartmentService.findApartmentsById(apartmentId);
 	}
 	@GetMapping(value = "/apartment/getApartments")
 	public List<Apartment> getApartments() {
 		return apartmentService.getApartments();
 	}
-	@GetMapping(value = "/apartment/findApartmentsByBlockName/{blockName}")
-	public List<Apartment> findApartmentsByBlockName(@PathVariable("blockName") String blockName) {
+	@GetMapping(value = "/apartment/findApartmentsByBlockName")
+	public List<ApartmentDto> findApartmentsByBlockName(@RequestParam String blockName) {
 		return apartmentService.findApartmentsByBlockName(blockName);
 	}
-	@DeleteMapping(value = "/apartment/delete/{blockName}/{apartmentId}")
-	public String deleteApartment(@PathVariable("blockName") String blockName, @PathVariable("apartmentId") Integer apartmentId) {
+	@DeleteMapping(value = "/apartment/delete")
+	public String deleteApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
 		return apartmentService.deleteApartment(blockName, apartmentId);
 	}
 }

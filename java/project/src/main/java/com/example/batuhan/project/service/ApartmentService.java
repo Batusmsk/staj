@@ -19,9 +19,9 @@ public class ApartmentService {
 	BlockService blockService;
 	
 	public String createApartment(ApartmentDto apartmentDto) {
-		if(!blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).isPresent()) return "No block was found.";
-		if((blockService.getBlock(apartmentDto.getBlockName()).get().getNumberOfFloors()) < apartmentDto.getFloor()) return "floor area excess";
-		if(getApartment(apartmentDto.getBlockName(), apartmentDto.getApartmentNo()).isPresent()) return "there cannot be two apartments with the same number in one block";
+		if(!blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).isPresent()) return "Blok bulunamadı";
+		if((blockService.getBlock(apartmentDto.getBlockName()).get().getNumberOfFloors()) < apartmentDto.getFloor()) return "Bu katta bulunan dairelerin toplam metre kareyi aşıyor";
+		if(getApartment(apartmentDto.getBlockName(), apartmentDto.getApartmentNo()).isPresent()) return "Bir blokta aynı numaraya sahip iki daire olamaz";
 		Integer baseArea = apartmentDto.getBaseArea();
 		for(var i:aptOnTheFloor(apartmentDto.getBlockName(), apartmentDto.getFloor())) {
 			baseArea += i.getBaseArea();
@@ -56,6 +56,7 @@ public class ApartmentService {
 	}
 	
 	public List<Apartment> getApartments() {
+		
 		return apartmentRepository.findAll();
 	}
 	
@@ -67,21 +68,31 @@ public class ApartmentService {
 		}
 		return Optional.empty();
 	}
-	public List<Apartment> findApartmentsById(Integer id) {
-		List<Apartment> list = new ArrayList<>();
+	public List<ApartmentDto> findApartmentsById(Integer id) {
+		List<ApartmentDto> list = new ArrayList<>();
 		for(var i:getApartments()) {
 			if(i.getApartmentNo() == id) {
-				list.add(i);
+				ApartmentDto dto = new ApartmentDto();
+				dto.setApartmentNo(i.getApartmentNo());
+				dto.setBaseArea(i.getBaseArea());
+				dto.setBlockName(i.getBlock().getBlockName());
+				dto.setFloor(i.getFloor());
+				list.add(dto);
 			}
 		}
 		return list;
 	}
 	
-	public List<Apartment> findApartmentsByBlockName(String block) {
-		List<Apartment> list = new ArrayList<>();
+	public List<ApartmentDto> findApartmentsByBlockName(String block) {
+		List<ApartmentDto> list = new ArrayList<>();
 		for(var i:getApartments()) {
 			if(i.getBlock().getBlockName().equals(block)) {
-				list.add(i);
+				ApartmentDto dto = new ApartmentDto();
+				dto.setApartmentNo(i.getApartmentNo());
+				dto.setBaseArea(i.getBaseArea());
+				dto.setBlockName(i.getBlock().getBlockName());
+				dto.setFloor(i.getFloor());
+				list.add(dto);
 			}
 		}
 		return list;

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site yönetimi - Giriş ekranı</title>
+
+    <script src="https://kit.fontawesome.com/515b445b8c.js" crossorigin="anonymous"></script>
+    <!-- FANCYBOX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <style>
+      body {
+        background-image: url('https://picsum.photos/3264/2448'); 
+        background-size: cover;
+        color: rgb(255, 255, 255);
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      h1 {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .box {
+        border-radius: 75px;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-bottom: 3%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        background-color: rgba(49, 49, 49, 0.8);
+      }
+      input[type="text"],
+      input[type="password"] {
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        width: 300px;
+      }
+
+      input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #ffcc00;
+        border: none;
+        color: black;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #003366;
+        color: white;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+        <h1>Giriş Yap</h1>
+        <input id="email" type="text" placeholder="E posta Adresi" required>
+        <input id="password" type="password" placeholder="Şifre" required>
+        <input onClick="loginButton()" type="submit" value="Giriş Yap">
+        </div>
+    </div>
+    <script src="./script/login.js"></script>
+  </body>
+</html>

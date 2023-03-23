@@ -1,4 +1,4 @@
-package com.example.batuhan.project.request;
+package com.example.batuhan.project.request_response;
 
 import lombok.Data;
 

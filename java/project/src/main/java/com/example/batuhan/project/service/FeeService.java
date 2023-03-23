@@ -2,8 +2,6 @@ package com.example.batuhan.project.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +15,14 @@ import com.example.batuhan.project.entity.Apartment;
 import com.example.batuhan.project.entity.Fee;
 import com.example.batuhan.project.entity.Person;
 import com.example.batuhan.project.repository.FeeRepository;
+import com.example.batuhan.project.request_response.FeeRequest;
 
 @Service
 public class FeeService {
 
 	@Value("${fee}")
 	private Integer fee;
+	
 	@Autowired
 	PersonService personService;
 	@Autowired
@@ -32,20 +32,20 @@ public class FeeService {
 	@Autowired
 	PaymentService paymentService;
 
-	public String createFee(FeeDto feeDto) {
+	public String createFee(FeeRequest request) {
 		Date date = new Date();
 		SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
 
-		if (!personService.getPerson(feeDto.getEmail()).isPresent())
+		if (!personService.getPerson(request.getEmail()).isPresent())
 			return "Kullanıcı bulunamadı";
 
-		Optional<Person> person = personService.getPerson(feeDto.getEmail());
+		Optional<Person> person = personService.getPerson(request.getEmail());
 
-		if (!apartmentService.getApartment(feeDto.getBlockName(), feeDto.getApartmentNo()).isPresent())
+		if (!apartmentService.getApartment(request.getBlockName(), request.getApartmentNo()).isPresent())
 			return "Daire bulunamadı";
-		if (!personService.findOwnerTheApartment(feeDto.getBlockName(), feeDto.getApartmentNo()).isPresent())
+		if (!personService.getPerson(personService.findOwnerTheApartment(request.getBlockName(), request.getApartmentNo()).getEmail()).isPresent())
 			return "Kullanıcıya ait daire bulunamadı.";
-		Optional<Apartment> apartment = apartmentService.getApartment(feeDto.getBlockName(), feeDto.getApartmentNo());
+		Optional<Apartment> apartment = apartmentService.getApartment(request.getBlockName(), request.getApartmentNo());
 		Integer feeAmount = fee * (apartment.get().getBaseArea());
 		Fee fee = new Fee();
 

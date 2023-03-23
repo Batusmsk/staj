@@ -3,7 +3,10 @@ package com.example.batuhan.project.auth;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.batuhan.project.service.PersonService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,10 +20,14 @@ public class TokenManager {
 	private static final Integer validity = 5 * 60 * 1000;
 	Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	
+	@Autowired
+	PersonService personService;
+	
 	public String generateToken(String email) {
 		
 		String jws = Jwts.builder().setSubject(email)
 				.setIssuer("batuhan")
+				.claim("roles", personService.getPerson(email).get().getRoles().toString())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + validity))
 				.signWith(key)
@@ -35,8 +42,6 @@ public class TokenManager {
 		return false;
 	}
 	
-	
-	
 	public String getEmailToken(String token) {
 		Claims claims = getClaims(token);
 		return claims.getSubject();
@@ -46,7 +51,18 @@ public class TokenManager {
 		Claims claims = getClaims(token);
 		return claims.getExpiration().after(new Date(System.currentTimeMillis()));
 	}
-	private Claims getClaims(String token) {
+	public Boolean tokenControl(String token) {
+		try {
+		if(tokenValidate(token) == true) {
+			return true;
+		} else {
+			return false;
+		}
+		} catch(Exception e) {
+			return false;
+		}
+	}
+	Claims getClaims(String token) {
 		return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 	}
 }

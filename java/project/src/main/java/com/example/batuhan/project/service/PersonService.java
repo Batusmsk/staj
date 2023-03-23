@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,8 @@ import com.example.batuhan.project.entity.Apartment;
 import com.example.batuhan.project.entity.Person;
 import com.example.batuhan.project.entity.PersonRole;
 import com.example.batuhan.project.repository.PersonRepository;
-import com.example.batuhan.project.request.RegisterRequest;
+import com.example.batuhan.project.request_response.FindOwnerResponse;
+import com.example.batuhan.project.request_response.RegisterRequest;
 
 @Service
 public class PersonService {
@@ -49,19 +49,51 @@ public class PersonService {
 		personRepository.save(person);
 		return "Kullanıcı oluşturuldu";
 	}
+	public String addRole(String mail, String role) {
+		Person person = getPerson(mail).get();
+		Set<PersonRole> roles = person.getRoles();
+		
+		if(role.toLowerCase().equals("user")) {
+			roles.add(PersonRole.USER);
+		} else if(role.toLowerCase().equals("admin")) {
+			roles.add(PersonRole.ADMIN);
+		}
+		
+		person.setRoles(roles);
+		personRepository.save(person);
+		return "Kullanıcıya rol eklendi " + roles;
+	}
+	
+	public String removeRole(String mail, String role) {
+		Person person = getPerson(mail).get();
+		Set<PersonRole> roles = person.getRoles();
+		
+		if(role.toLowerCase().equals("user")) {
+			roles.remove(PersonRole.USER);
+		} else if(role.toLowerCase().equals("admin")) {
+			roles.remove(PersonRole.ADMIN);
+		}
+		
+		person.setRoles(roles);
+		personRepository.save(person);
+		return "Rol kullanıcıdan alındı " + roles;
+	}
+	
 	public Optional<Person> getPerson(String mail) {
+		if(!personRepository.findById(mail).isPresent()) return Optional.empty();
 		return personRepository.findById(mail);
 	}
-	public List<PersonDto> getPersons() {
-		List<PersonDto> list = new ArrayList<>();
+	public List<FindOwnerResponse> getPersons() {
+		List<FindOwnerResponse> list = new ArrayList<>();
 		
 		for(var i:personRepository.findAll()) {
-			PersonDto dto = new PersonDto();
-			dto.setName(i.getName());
-			dto.setLastName(i.getLastName());
-			dto.setPhoneNumber(i.getPhoneNumber());
-			dto.setEmail(i.getEmail());
-			list.add(dto);
+			FindOwnerResponse response = new FindOwnerResponse();
+			response.setEmail(i.getEmail());
+			response.setLastName(i.getLastName());
+			response.setName(i.getName());
+			response.setPhoneNumber(i.getPhoneNumber());
+			response.setRoles(i.getRoles().toString());
+			list.add(response);
 		}
 		return list;
 	}
@@ -86,13 +118,19 @@ public class PersonService {
         return list;
     }
     
-	public Optional<Person> findOwnerTheApartment(String blockName, Integer apartmentNo) {
+	public FindOwnerResponse findOwnerTheApartment(String blockName, Integer apartmentNo) {
 		try {
-		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return Optional.empty();
+		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return null;
 		if(!getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail()).isPresent()) return null;
 		
 		Optional<Person> person = getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail());
-			return person;
+		FindOwnerResponse response = new FindOwnerResponse();
+		response.setEmail(person.get().getEmail());
+		response.setLastName(person.get().getLastName());
+		response.setName(person.get().getName());
+		response.setPhoneNumber(person.get().getPhoneNumber());
+		response.setRoles(person.get().getRoles().toString());
+			return response;
 		} catch (Exception e) {
 			return null;
 		}
