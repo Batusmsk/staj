@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +56,10 @@ public class AuthConroller {
     @GetMapping(value = "/tokenControl")
     public Boolean tokenControl(@RequestParam String token) {
     	return tokenManager.tokenControl(token);
+    }
+    @GetMapping(value = "/getEmail")
+    public String getEmailToken(@RequestParam String token) {
+    	return tokenManager.getEmailToken(token);
     }
 
 }

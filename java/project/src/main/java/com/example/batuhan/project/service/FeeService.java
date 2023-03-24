@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.batuhan.project.dto.FeeDto;
@@ -79,6 +80,7 @@ public class FeeService {
 				feeDto.setBlockName(i.getApartment().getBlock().getBlockName());
 				feeDto.setEmail(email);
 				feeDto.setFeeDate(i.getFeeDate());
+				feeDto.setPaidAmount(i.getPaidAmount());
 				feeDto.setFeeAmount(i.getFeeAmount());
 				feeDto.setStatus(i.getStatus());
 				list.add(feeDto);
@@ -153,6 +155,25 @@ public class FeeService {
 		feeRepository.save(fee);
 		return "Aidat ödendi";
 	
+	}
+	
+	@Scheduled(cron = "0 0 0 * * ?")
+	public boolean addFeeForAllPerson() {
+    	Integer person = 0;
+    	Integer apartment = 0;
+    	for(var p:personService.getPersons()) {
+    		person++;
+    		for(var a:personService.findApartmentsByPerson(p.getEmail())) {
+    			apartment++;
+    			FeeRequest request = new FeeRequest();
+    			request.setApartmentNo(a.getApartmentNo());
+    			request.setBlockName(a.getBlock().getBlockName());
+    			request.setEmail(p.getEmail());
+    			createFee(request);
+    		}
+    	}
+        System.out.println("Toplam "+ person +" Kişiye aidat eklendi. Toplam aidat eklenen apartman sayısı: " + apartment);
+        return true;
 	}
 
 }
