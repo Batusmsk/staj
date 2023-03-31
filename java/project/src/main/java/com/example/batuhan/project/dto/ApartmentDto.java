@@ -8,5 +8,6 @@ public class ApartmentDto {
 	String blockName;
 	Integer floor;
 	Integer baseArea;
+	String purchaseDate;
 	
 }

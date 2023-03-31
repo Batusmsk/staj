@@ -17,6 +17,8 @@ public class ApartmentService {
 	ApartmentRepository apartmentRepository;
 	@Autowired
 	BlockService blockService;
+	@Autowired
+	PersonService personService;
 	
 	public String createApartment(ApartmentDto apartmentDto) {
 		if(!blockService.getBlock(apartmentDto.getBlockName().toUpperCase()).isPresent()) return "Blok bulunamadı";
@@ -49,6 +51,7 @@ public class ApartmentService {
 				apartmentDto.setBaseArea(i.getBaseArea());
 				apartmentDto.setBlockName(i.getBlock().getBlockName());
 				apartmentDto.setFloor(i.getFloor());
+				apartmentDto.setPurchaseDate(i.getPurchaseDate());
 				list.add(apartmentDto);				
 			}
 		}
@@ -77,6 +80,7 @@ public class ApartmentService {
 				dto.setBaseArea(i.getBaseArea());
 				dto.setBlockName(i.getBlock().getBlockName());
 				dto.setFloor(i.getFloor());
+				dto.setPurchaseDate(i.getPurchaseDate());
 				list.add(dto);
 			}
 		}
@@ -92,6 +96,7 @@ public class ApartmentService {
 				dto.setBaseArea(i.getBaseArea());
 				dto.setBlockName(i.getBlock().getBlockName());
 				dto.setFloor(i.getFloor());
+				dto.setPurchaseDate(i.getPurchaseDate());
 				list.add(dto);
 			}
 		}
@@ -104,6 +109,21 @@ public class ApartmentService {
 			return "Daire silindi";
 		}
 		return "Daire bulunamadı";
+	}
+	
+	public List<ApartmentDto> findApartmentsByPerson(String email) {
+		List<ApartmentDto> apartments = new ArrayList<>();
+		if(!personService.findByEmail(email).isPresent()) return null;
+		for(var i:getApartments()) {
+			ApartmentDto dto = new ApartmentDto();
+			dto.setApartmentNo(i.getApartmentNo());
+			dto.setBaseArea(i.getBaseArea());
+			dto.setBlockName(i.getBlock().getBlockName());
+			dto.setFloor(i.getFloor());
+			dto.setPurchaseDate(i.getPurchaseDate());
+			apartments.add(dto);
+		}
+		return apartments;
 	}
 	
     public void saveOrUpdateApartment(Apartment apartment) {

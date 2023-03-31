@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -23,6 +25,9 @@ import lombok.Data;
 public class Person {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
 	private String email;
 	@JsonIgnore
 	private String password;
@@ -32,7 +37,7 @@ public class Person {
 	private String lastName;
 	
     @ElementCollection(targetClass = PersonRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "person_roles", joinColumns = @JoinColumn(name = "email"))
+    @CollectionTable(name = "person_roles", joinColumns = @JoinColumn(name = "personId"))
     @Enumerated(EnumType.STRING) // rolün enum string değerlerini veritabanında sakla.
     private Set<PersonRole> roles;
     

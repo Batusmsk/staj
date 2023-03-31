@@ -53,4 +53,8 @@ public class ApartmentController {
 	public String deleteApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
 		return apartmentService.deleteApartment(blockName, apartmentId);
 	}
+	@GetMapping(value = "/apartment/findApartmentsByPerson")
+	public List<ApartmentDto> findApartmentsByPerson(@RequestParam String email) {
+		return apartmentService.findApartmentsByPerson(email);
+	}
 }

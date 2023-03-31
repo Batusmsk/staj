@@ -37,15 +37,15 @@ public class FeeService {
 		Date date = new Date();
 		SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
 
-		if (!personService.getPerson(request.getEmail()).isPresent())
-			return "Kullanıcı bulunamadı";
+		if (!personService.findByEmail(request.getEmail()).isPresent())
+			return "WARN001";
 
-		Optional<Person> person = personService.getPerson(request.getEmail());
+		Optional<Person> person = personService.findByEmail(request.getEmail());
 
 		if (!apartmentService.getApartment(request.getBlockName(), request.getApartmentNo()).isPresent())
-			return "Daire bulunamadı";
-		if (!personService.getPerson(personService.findOwnerTheApartment(request.getBlockName(), request.getApartmentNo()).getEmail()).isPresent())
-			return "Kullanıcıya ait daire bulunamadı.";
+			return "WARN001";
+		if (!personService.findByEmail(personService.findOwnerTheApartment(request.getBlockName(), request.getApartmentNo()).getEmail()).isPresent())
+			return "WARN003.";
 		Optional<Apartment> apartment = apartmentService.getApartment(request.getBlockName(), request.getApartmentNo());
 		Integer feeAmount = fee * (apartment.get().getBaseArea());
 		Fee fee = new Fee();
@@ -57,7 +57,7 @@ public class FeeService {
 		fee.setFeeDate(ft.format(date));
 		fee.setStatus(true);
 		feeRepository.save(fee);
-		return "Aidat eklendi.";
+		return "WARN004";
 	}
 
 	public List<Fee> getFees() {
@@ -69,7 +69,7 @@ public class FeeService {
 	}
 
 	public List<FeeDto> findByPerson(String email) {
-		if (!personService.getPerson(email).isPresent())
+		if (!personService.findByEmail(email).isPresent())
 			return null;
 		List<FeeDto> list = new ArrayList<>();
 		for (var i : getFees()) {
@@ -108,9 +108,9 @@ public class FeeService {
 
 	public String payFee(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
-			return "Böyle bir aidat bulunmuyor";
+			return "WARN006";
 		if (getFee(id).get().getStatus() == false)
-			return "Bu aidat borcu önceden ödenmiş";
+			return "WARN006";
 
 		Optional<Fee> fee = getFee(id);
 		
@@ -118,27 +118,23 @@ public class FeeService {
 		
 		var payment = paymentService.createPayment(id, fee.get().getPerson().getEmail(), xxx);
 		if (payment == false)
-			return "Hata";
+			return "WARN";
 		fee.get().setStatus(false);
 		fee.get().setPaidAmount(fee.get().getFeeAmount());
 		feeRepository.save(fee.get());
-		return "Aidat ödendi";
-	}
-
-	public long topla(long a, long b) {
-		return a+b;
+		return "WARN007";
 	}
 	public String amountWithPayment(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
-			return "Böyle bir aidat borcu bulunmuyor";
+			return "WARN005";
 		if (getFee(id).get().getStatus() == false)
-			return "bu aidat daha önce ödendi";
+			return "WARN006";
 		Fee fee = getFee(id).get();
-		if(!fee.getStatus()) return "bu aidat daha önce ödendi";
+		if(!fee.getStatus()) return "WARN006";
 		
 		if(amount >= (fee.getFeeAmount() - fee.getPaidAmount())) {
 			
-			if(amount > (fee.getFeeAmount() - fee.getPaidAmount())) return "ödemek istediğiniz tutar borcunuzdan fazladır";
+			if(amount > (fee.getFeeAmount() - fee.getPaidAmount())) return "WARN009";
 					
 			return payFee(id, amount);
 		} 
@@ -151,13 +147,13 @@ public class FeeService {
 		
 		var payment = paymentService.createPayment(id, fee.getPerson().getEmail(), amount);
 		if (payment == false)
-			return "Hata";
+			return "WARN";
 		feeRepository.save(fee);
-		return "Aidat ödendi";
+		return "WARN007";
 	
 	}
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 1 * ? * *")
 	public boolean addFeeForAllPerson() {
     	Integer person = 0;
     	Integer apartment = 0;

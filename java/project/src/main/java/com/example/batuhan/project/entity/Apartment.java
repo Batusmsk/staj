@@ -26,7 +26,8 @@ public class Apartment {
 	@Id
 	@OneToOne
     private Block block;
+	
 	@JsonIgnore
-	private String email;
+	private Integer personId;
 }
 

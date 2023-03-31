@@ -1,6 +1,8 @@
 var xhttp = new XMLHttpRequest();
 const xhr = new XMLHttpRequest();
 
+
+
 function wait(second) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -38,7 +40,8 @@ async function loginControl() {
             }
         } else {
  
-            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";            
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/pages;";         
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";     
         }
     } 
 }
@@ -48,7 +51,6 @@ async function loginButton() {
     const password = document.getElementById("password");
 
     const data = {email: `${email.value}`, password: `${password.value}`};
-    console.log(data);
     let x = await requestBody("http://my.batuhan.com:8080/user/login", data);
 }
 
@@ -62,24 +64,30 @@ async function requestBody(url, data) {
           if (xhr.readyState === 4) {
             console.log(xhr.status);
             console.log(xhr.responseText);
-            document.cookie = `token=${xhr.responseText};`;
+            
             
             if(xhr.status == 403) {
-                return alert("Email veya şifre yanlış");
+                Fnon.Hint.Danger('Kullanıcı Adı Veya Şifre Hatalı',{
+                    position: 'center-center',
+                    fontSize: '14px',
+                    width: '300px',
+                    title: 'Hata'
+                });
+                
             } else if (xhr.status == 200) {
                 let roles = await fetchData(`http://my.batuhan.com:8080/user/getUserRoles?token=${xhr.responseText}`);
                 if(roles.includes("ADMIN")) {
                     xx = `http://my.batuhan.com:5500/pages/admin.html`;
-                    document.cookie = `token=${xhr.responseText}; path=/;`;
                 } else {
                     xx = `http://my.batuhan.com:5500/pages/user.html`;
-                    document.cookie = `token=${xhr.responseText}; path=/;`;
+                    
                 }
+                document.cookie = `token=${xhr.responseText}; path=/`;
                 window.location.href =xx;
                 
                 console.log(roles);
             } else {
-                return alert("HATA!");
+                Fnon.Hint.Danger('Sunucu bağlantısı kurulamadı!','Bağlantı Hatası');
             }
           }
         };
@@ -87,6 +95,7 @@ async function requestBody(url, data) {
         const body = JSON.stringify(data);
         xhr.send(body);
     } catch(error) {
+        Fnon.Hint.Danger('Sunucu bağlantısı kurulamadı!','Bağlantı Hatası');
         console.error(error);
     }
 }
@@ -97,6 +106,7 @@ async function fetchData(url) {
         var data = await response.text();
         return data;
     } catch (error) {
+        //Fnon.Hint.Danger('Sunucu bağlantısı kurulamadı!','Bağlantı Hatası');
         console.error(error);
     }
 }

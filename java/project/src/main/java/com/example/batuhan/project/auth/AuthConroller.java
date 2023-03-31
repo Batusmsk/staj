@@ -50,7 +50,7 @@ public class AuthConroller {
     
     @GetMapping(value = "/getUserRoles")
     public Set<PersonRole> getUserRoles(@RequestParam String token) {
-    	return personService.getPerson(tokenManager.getEmailToken(token)).get().getRoles();
+    	return personService.findByEmail(tokenManager.getEmailToken(token)).get().getRoles();
     }
     //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImJhdHVoYW4iLCJyb2xlcyI6IltVU0VSXSIsImlhdCI6MTY3OTU3ODQ1NywiZXhwIjoxNjc5NTc4NzU3fQ.2VpiWc2JE74_HY-MzK_jdD7fIR60OvWHWTFcxf-7LIk
     @GetMapping(value = "/tokenControl")

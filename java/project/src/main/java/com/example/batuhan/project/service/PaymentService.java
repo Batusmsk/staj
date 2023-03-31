@@ -30,12 +30,12 @@ public class PaymentService {
 		try {
 			Date date = new Date();
 			SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
-			Optional<Person> person = personService.getPerson(email);
+			Optional<Person> person = personService.findByEmail(email);
 			Payment payment = new Payment();
 			payment.setFee(feeService.getFee(id).get());
 			payment.setPaymentAmount(amount);
 			payment.setPaymentDate(ft.format(date));
-			payment.setPerson(personService.getPerson(email).get());
+			payment.setPerson(personService.findByEmail(email).get());
 			paymentRepository.save(payment);
 			
 			return true;
@@ -46,7 +46,7 @@ public class PaymentService {
 
 	}
 	public List<PaymentResponse> findByPerson(String email) {
-		if(!personService.getPerson(email).isPresent()) return null;
+		if(!personService.findByEmail(email).isPresent()) return null;
 		List<PaymentResponse> list = new ArrayList<>();
 		for(var i:getPayments()) {
 			if(i.getPersonEmail().equals(email)) {

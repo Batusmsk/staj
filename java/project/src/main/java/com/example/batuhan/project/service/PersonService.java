@@ -7,11 +7,15 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.batuhan.project.auth.TokenManager;
 import com.example.batuhan.project.auth.UserDetailsService;
-import com.example.batuhan.project.dto.PersonDto;
 import com.example.batuhan.project.dto.PurchaseApartmentDto;
 import com.example.batuhan.project.entity.Apartment;
 import com.example.batuhan.project.entity.Person;
@@ -19,6 +23,9 @@ import com.example.batuhan.project.entity.PersonRole;
 import com.example.batuhan.project.repository.PersonRepository;
 import com.example.batuhan.project.request_response.FindOwnerResponse;
 import com.example.batuhan.project.request_response.RegisterRequest;
+import com.example.batuhan.project.request_response.UpdateProfileRequest;
+
+import io.jsonwebtoken.Jwts;
 
 @Service
 public class PersonService {
@@ -34,6 +41,11 @@ public class PersonService {
 	UserDetailsService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private TokenManager tokenManager;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 	public String createPerson(RegisterRequest request) {
 		
 		Set<PersonRole> roles = new HashSet<>();
@@ -47,10 +59,11 @@ public class PersonService {
 		person.setRoles(roles);
 		person.setPhoneNumber(request.getPhoneNumber());
 		personRepository.save(person);
-		return "Kullanıcı oluşturuldu";
+		return "WARN010";
 	}
+
 	public String addRole(String mail, String role) {
-		Person person = getPerson(mail).get();
+		Person person = findByEmail(mail).get();
 		Set<PersonRole> roles = person.getRoles();
 		
 		if(role.toLowerCase().equals("user")) {
@@ -61,11 +74,11 @@ public class PersonService {
 		
 		person.setRoles(roles);
 		personRepository.save(person);
-		return "Kullanıcıya rol eklendi " + roles;
+		return "WARN011";
 	}
 	
 	public String removeRole(String mail, String role) {
-		Person person = getPerson(mail).get();
+		Person person = findByEmail(mail).get();
 		Set<PersonRole> roles = person.getRoles();
 		
 		if(role.toLowerCase().equals("user")) {
@@ -76,13 +89,14 @@ public class PersonService {
 		
 		person.setRoles(roles);
 		personRepository.save(person);
-		return "Rol kullanıcıdan alındı " + roles;
+		return "WARN012";
 	}
 	
-	public Optional<Person> getPerson(String mail) {
-		if(!personRepository.findById(mail).isPresent()) return Optional.empty();
-		return personRepository.findById(mail);
+	public Optional<Person> findByEmail(String mail) {
+		if(!personRepository.findByEmail(mail).isPresent()) return Optional.empty();
+		return personRepository.findByEmail(mail);
 	}
+	
 	public List<FindOwnerResponse> getPersons() {
 		List<FindOwnerResponse> list = new ArrayList<>();
 		
@@ -98,32 +112,33 @@ public class PersonService {
 		return list;
 	}
 	public String addApartmentToPerson(PurchaseApartmentDto dto) {
-		if(!apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).isPresent()) return "Apartman bulunamadı";
-		if(getPerson(dto.getEmail()).isPresent() == false) return "Kullanıcı bulunamadı";
-		if(apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate() != null && apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate().length() > 3) return "Daire zaten satın alındı.";
-		Optional<Person> person = getPerson(dto.getEmail());
+		if(!apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).isPresent()) return "WARN002";
+		if(findByEmail(dto.getEmail()).isPresent() == false) return "WARN001";
+		if(apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate() != null && apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo()).get().getPurchaseDate().length() > 3) return "WARN013";
+		Optional<Person> person = findByEmail(dto.getEmail());
 		List<Apartment> list = person.get().getPersonApartments();	
 		Optional<Apartment> apartment = apartmentService.getApartment(dto.getBlockNo(), dto.getApartmentNo());
 		apartment.get().setPurchaseDate(dto.getPurchaseDate());
+		apartment.get().setPersonId(person.get().getId());
 		list.add(apartment.get());
 		person.get().setPersonApartments(list);
 		personRepository.save(person.get());
 		apartmentService.saveOrUpdateApartment(apartment.get());
-		return "Başarıyla apartmana kullanıcı eklendi";
+		return "WARN014";
 	}
 	
     public List<Apartment> findApartmentsByPerson(String email) {
-    	if(getPerson(email).isPresent() == false) return null;
-    	List<Apartment> list = getPerson(email).get().getPersonApartments();
+    	if(findByEmail(email).isPresent() == false) return null;
+    	List<Apartment> list = findByEmail(email).get().getPersonApartments();
         return list;
     }
     
 	public FindOwnerResponse findOwnerTheApartment(String blockName, Integer apartmentNo) {
 		try {
 		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return null;
-		if(!getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail()).isPresent()) return null;
+		if(!findByEmail(personRepository.findById(apartmentService.getApartment(blockName, apartmentNo).get().getPersonId()).get().getEmail()).isPresent()) return null;
 		
-		Optional<Person> person = getPerson(apartmentService.getApartment(blockName, apartmentNo).get().getEmail());
+		Optional<Person> person = personRepository.findById(apartmentService.getApartment(blockName, apartmentNo).get().getPersonId());
 		FindOwnerResponse response = new FindOwnerResponse();
 		response.setEmail(person.get().getEmail());
 		response.setLastName(person.get().getLastName());
@@ -137,18 +152,18 @@ public class PersonService {
 	}
 	
 	public String removeApartmentToPerson(String email, String blockName, Integer apartmentNo) {
-		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return "Apartman bulunamadı";
-		if(getPerson(email).isPresent() == false) return "Kullanıcı bulunamadı";
+		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return "WARN002";
+		if(findByEmail(email).isPresent() == false) return "WARN001";
 		
 		for(var i:feeService.findByPerson(email)) {
 			if(i.getStatus() == true) {
-				return "Ödenmemiş borçlar nedeniyle daire boşaltılamaz.";
+				return "WARN015";
 			}
 		}
 		
-		if(apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate() == null || apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate().length() < 4) return "Bu daire henüz satın alınmadı";
+		if(apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate() == null || apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate().length() < 4) return "WARN016";
 		Optional<Apartment> apartment = apartmentService.getApartment(blockName, apartmentNo);
-		Optional<Person> person = getPerson(email);
+		Optional<Person> person = findByEmail(email);
 		List<Apartment> list = person.get().getPersonApartments();
 		for(var i:list) {
 			if(i.getApartmentNo() == apartmentNo && i.getBlock().getBlockName().equals(blockName)) {
@@ -160,7 +175,37 @@ public class PersonService {
 		personRepository.save(person.get());
 		apartmentService.saveOrUpdateApartment(apartment.get());
 		
-		return "Kullanıcı apartmandan kaldırıldı";
+		return "WARN017";
+	}
+	public String updateEmailAndNumber(UpdateProfileRequest request, String userEmail) {
+		if(!findByEmail(userEmail).isPresent()) return "WARN001";
+		Person person = findByEmail(userEmail).get();
+		
+		for(var i:getPersons()) {
+			if(i.getEmail().toLowerCase().equals(request.getEmail())) {
+				return "WARN021";
+			}
+			if(i.getPhoneNumber().equals(request.getPhoneNumber())) {
+				return "WARN022";
+			}
+		}
+		
+		String email = (request.getEmail() == null ||  request.getEmail().equals("null")) ? person.getEmail() : request.getEmail();
+		String number = (request.getPhoneNumber() == null || request.getPhoneNumber().equals("null")) ?  person.getPhoneNumber() : request.getPhoneNumber();
+		person.setEmail(email);
+		person.setPhoneNumber(number);
+		personRepository.save(person);
+		return "WARN020";
+	}
+	public String changePassword(String email, String newPassword, String oldPassword) {
+		if(!findByEmail(email).isPresent()) return "WARN001";
+		Person person = findByEmail(email).get();
+		
+		if(!passwordEncoder.matches(oldPassword, person.getPassword())) return "WARN018";
+		person.setPassword(passwordEncoder.encode(newPassword));
+		personRepository.save(person);
+		return "WARN019";
+		
 	}
 }
  

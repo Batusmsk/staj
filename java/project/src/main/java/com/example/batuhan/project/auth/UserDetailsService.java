@@ -32,7 +32,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	    public UserDetails loadUserByUsername(String email)  {
 	    	
 	    	try {
-		        Person person = personService.getPerson(email).get();
+		        Person person = personService.findByEmail(email).get();
 		        
 		        var user= User.builder()
 		          .username(person.getEmail())
