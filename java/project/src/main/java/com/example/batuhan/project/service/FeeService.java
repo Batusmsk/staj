@@ -50,7 +50,8 @@ public class FeeService {
 		Integer feeAmount = fee * (apartment.get().getBaseArea());
 		Fee fee = new Fee();
 
-		fee.setApartment(apartment.get());
+		fee.setApartment(request.getApartmentNo());
+		fee.setBlockNo(request.getBlockName());
 		fee.setPerson(person.get());
 		fee.setPaidAmount(0);
 		fee.setFeeAmount(feeAmount);
@@ -76,8 +77,8 @@ public class FeeService {
 			if (i.getPerson().getEmail().equals(email)) {
 				FeeDto feeDto = new FeeDto();
 				feeDto.setId(i.getId());
-				feeDto.setApartmentNo(i.getApartment().getApartmentNo());
-				feeDto.setBlockName(i.getApartment().getBlock().getBlockName());
+				feeDto.setApartmentNo(i.getApartment());
+				feeDto.setBlockName(i.getBlockNo());
 				feeDto.setEmail(email);
 				feeDto.setFeeDate(i.getFeeDate());
 				feeDto.setPaidAmount(i.getPaidAmount());
@@ -95,8 +96,8 @@ public class FeeService {
 		List<FeeDto> list = new ArrayList<>();
 		for (var i : feeRepository.findByApartment(apartmentService.getApartment(blockName, ApartmentNo).get())) {
 			FeeDto feeDto = new FeeDto();
-			feeDto.setApartmentNo(i.getApartment().getApartmentNo());
-			feeDto.setBlockName(i.getApartment().getBlock().getBlockName());
+			feeDto.setApartmentNo(i.getApartment());
+			feeDto.setBlockName(i.getBlockNo());
 			feeDto.setEmail(i.getPerson().getEmail());
 			feeDto.setFeeDate(i.getFeeDate());
 			feeDto.setStatus(i.getStatus());
@@ -105,7 +106,7 @@ public class FeeService {
 		}
 		return list;
 	}
-
+	
 	public String payFee(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
 			return "WARN006";
@@ -124,6 +125,9 @@ public class FeeService {
 		feeRepository.save(fee.get());
 		return "WARN007";
 	}
+    public long topla(long a,long b){
+        return a+b;
+     }
 	public String amountWithPayment(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
 			return "WARN005";
@@ -168,7 +172,7 @@ public class FeeService {
     			createFee(request);
     		}
     	}
-        System.out.println("Toplam "+ person +" Kişiye aidat eklendi. Toplam aidat eklenen apartman sayısı: " + apartment);
+        
         return true;
 	}
 

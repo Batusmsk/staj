@@ -129,7 +129,13 @@ public class PersonService {
 	
     public List<Apartment> findApartmentsByPerson(String email) {
     	if(findByEmail(email).isPresent() == false) return null;
-    	List<Apartment> list = findByEmail(email).get().getPersonApartments();
+    	List<Apartment> list = new ArrayList<>();
+    	for(var i : apartmentService.getApartments()) {
+    		if(i.getPersonId() == findByEmail(email).get().getId()) {
+    			list.add(i);
+    		}
+    	}
+    	//List<Apartment> list = findByEmail(email).get().getPersonApartments();
         return list;
     }
     
@@ -177,6 +183,7 @@ public class PersonService {
 		
 		return "WARN017";
 	}
+	
 	public String updateEmailAndNumber(UpdateProfileRequest request, String userEmail) {
 		if(!findByEmail(userEmail).isPresent()) return "WARN001";
 		Person person = findByEmail(userEmail).get();

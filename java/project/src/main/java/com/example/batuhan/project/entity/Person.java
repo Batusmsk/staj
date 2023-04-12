@@ -41,6 +41,8 @@ public class Person {
     @Enumerated(EnumType.STRING) // rolün enum string değerlerini veritabanında sakla.
     private Set<PersonRole> roles;
     
+    
+    
    @OneToMany(fetch = FetchType.EAGER)
    @JoinColumn(name = "email")
    List<Apartment> personApartments = new ArrayList<>();

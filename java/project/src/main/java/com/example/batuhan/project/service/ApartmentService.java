@@ -115,13 +115,15 @@ public class ApartmentService {
 		List<ApartmentDto> apartments = new ArrayList<>();
 		if(!personService.findByEmail(email).isPresent()) return null;
 		for(var i:getApartments()) {
-			ApartmentDto dto = new ApartmentDto();
-			dto.setApartmentNo(i.getApartmentNo());
-			dto.setBaseArea(i.getBaseArea());
-			dto.setBlockName(i.getBlock().getBlockName());
-			dto.setFloor(i.getFloor());
-			dto.setPurchaseDate(i.getPurchaseDate());
-			apartments.add(dto);
+			if(i.getPersonId() == personService.findByEmail(email).get().getId()) {
+				ApartmentDto dto = new ApartmentDto();
+				dto.setApartmentNo(i.getApartmentNo());
+				dto.setBaseArea(i.getBaseArea());
+				dto.setBlockName(i.getBlock().getBlockName());
+				dto.setFloor(i.getFloor());
+				dto.setPurchaseDate(i.getPurchaseDate());
+				apartments.add(dto);	
+			}
 		}
 		return apartments;
 	}

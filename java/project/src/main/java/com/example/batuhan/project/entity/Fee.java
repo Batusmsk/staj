@@ -17,8 +17,9 @@ public class Fee {
 	
 	@OneToOne
 	private Person person;
-	@OneToOne
-	private Apartment apartment;
+	
+	private String blockNo;
+	private Integer apartment;
 	private String feeDate;
 	private Integer feeAmount;
 	private Boolean status;

@@ -51,7 +51,6 @@ public class TicketService {
 		Boolean x = false;
 		
 		for(var i:personService.findByEmail(email).get().getRoles()) {
-			System.out.print(i + " " + i.toString().toLowerCase());
 			if(i.toString().toLowerCase().equals("admın")) {
 			 x = true;
 			 break;

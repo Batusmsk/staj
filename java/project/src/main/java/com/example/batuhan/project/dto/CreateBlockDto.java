@@ -9,5 +9,5 @@ public class CreateBlockDto {
 	String blockName;
 	Integer numberOfFloors;
 	Integer baseArea;
-	Integer totalApartmentCount;
+	//Integer totalApartmentCount;
 }

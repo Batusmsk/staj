@@ -83,6 +83,7 @@ public class PersonController {
 	
 	@PostMapping(value = "/person/updateEmailAndNumber", produces = "text/plain;charset=UTF-8")
 	public String updateEmailAndNumber(HttpServletRequest request, @RequestHeader(value = "Authorization") String token, @RequestBody UpdateProfileRequest updateProfileRequest) {
+		
 		String userToken = token.replace("Bearer ", "");
 		String email = tokenManager.getEmailToken(userToken);
 		

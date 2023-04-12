@@ -30,12 +30,12 @@ public class ApartmentController {
 	//aptOnTheFloor
 	@GetMapping(value = "/apartment/aptOnTheFloor")
 	public ResponseEntity<List<ApartmentDto>> getAptOnTheFloor(@RequestParam String block, @RequestParam Integer floor) {
-		return new ResponseEntity<List<ApartmentDto>>(apartmentService.aptOnTheFloor(block, floor), HttpStatus.OK);
+		return new ResponseEntity<List<ApartmentDto>>(apartmentService.aptOnTheFloor(block.toUpperCase(), floor), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/apartment/getApartment")
 	public Optional<Apartment> getApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
-		return apartmentService.getApartment(blockName, apartmentId);
+		return apartmentService.getApartment(blockName.toUpperCase(), apartmentId);
 	}
 	@GetMapping(value = "/apartment/findApartmentsById")
 	public List<ApartmentDto> getApartment(@RequestParam Integer apartmentId) {
@@ -47,11 +47,11 @@ public class ApartmentController {
 	}
 	@GetMapping(value = "/apartment/findApartmentsByBlockName")
 	public List<ApartmentDto> findApartmentsByBlockName(@RequestParam String blockName) {
-		return apartmentService.findApartmentsByBlockName(blockName);
+		return apartmentService.findApartmentsByBlockName(blockName.toUpperCase());
 	}
 	@DeleteMapping(value = "/apartment/delete")
 	public String deleteApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
-		return apartmentService.deleteApartment(blockName, apartmentId);
+		return apartmentService.deleteApartment(blockName.toUpperCase(), apartmentId);
 	}
 	@GetMapping(value = "/apartment/findApartmentsByPerson")
 	public List<ApartmentDto> findApartmentsByPerson(@RequestParam String email) {

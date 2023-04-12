@@ -1,1 +1,0 @@
-window.location.href = "http://my.batuhan.com:5500/pages/login.html"

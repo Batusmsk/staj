@@ -17,5 +17,6 @@ public class Block {
     
 	Integer numberOfFloors;
 	Integer baseArea;
-	Integer totalApartmentCount;
+	//Integer totalApartmentCount;
 }
+

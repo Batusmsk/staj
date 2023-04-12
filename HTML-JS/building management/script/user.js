@@ -25,10 +25,6 @@ async function loginControl() {
   await staticsButton();
 
 }
-async function logout() {
-  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  window.location.href = "http://my.batuhan.com:5500/pages/login.html";
-}
 
 async function user() {
   let token = await fetchCookie("token");
@@ -198,6 +194,7 @@ async function showApartments() {
     <td>${apartments[i].floor}</td>
     <td>${apartments[i].purchaseDate}</td>
   </tr>
+  
     `;
   }
   x += `</tbody>
@@ -365,6 +362,12 @@ async function staticsButton() {
   let fees = await makeApiCall(`http://my.batuhan.com:8080/fee/findByPerson?email=${userEmail}`);
   let apartments = await makeApiCall(`http://my.batuhan.com:8080/apartment/findApartmentsByPerson?email=${userEmail}`);
   let payments = await makeApiCall(`http://my.batuhan.com:8080/payment/findByPerson?email=${userEmail}`);
+  let person = await makeApiCall(`http://my.batuhan.com:8080/person/getPerson/${userEmail}`);
+  let rol = "";
+  
+  if(person.roles.includes("ADMIN")) {
+    rol = `<li><a href="http://my.batuhan.com:5500/pages/admin.html">Admin Paneli</a></li>`;
+  }
 
   let unPaid = 0;
   let paid = 0;
@@ -382,11 +385,12 @@ async function staticsButton() {
 
   let x = `
   <div class="profile">
-  <div class="slide-bar">
+  <div class="slide-menu">
     <ul>
       <li><p href="#" onClick="staticsButton()">Hesap Istatistikleri</p></li>
       <li><p href="#" onClick="settingsButton()">Hesap Ayarları</p></li>
       <li><p href="#" onClick="supportButton()">Destek</p></li>
+      ${rol}
     </ul>
   </div>
   <div class="choice" id="choice">

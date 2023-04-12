@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.batuhan.project.dto.ApartmentDto;
 import com.example.batuhan.project.dto.CreateBlockDto;
+import com.example.batuhan.project.entity.Apartment;
 import com.example.batuhan.project.entity.Block;
 import com.example.batuhan.project.repository.BlockRepository;
 
@@ -15,35 +17,40 @@ public class BlockService {
 
 	@Autowired
 	BlockRepository blockRepository;
+	@Autowired
+	ApartmentService apartmentService;
 
 	public String createBlock(CreateBlockDto createBlockDto) {
-		try {
+		
 			for (var i : blockRepository.findAll()) {
 				if (i.getBlockName().toLowerCase().equals(createBlockDto.getBlockName().toLowerCase())) {
-					return "Bu isimde bir blok mevcut";
+					return "WARN025";
 				}
 			}
 			Block block = new Block();
 			block.setBlockName(createBlockDto.getBlockName().toUpperCase());
 			block.setNumberOfFloors(createBlockDto.getNumberOfFloors());
-			block.setTotalApartmentCount(createBlockDto.getTotalApartmentCount());
+			//block.setTotalApartmentCount(createBlockDto.getTotalApartmentCount());
 			block.setBaseArea(createBlockDto.getBaseArea());
 			blockRepository.save(block);
-			return "Blok oluşturuldu";
-		} catch (Exception e) {
-			return e.getMessage();
-		}
+			return "WARN024";
+
 	}
 	
 	public String deleteBlock(String blockName) {
 		try {
+			List<ApartmentDto> a = apartmentService.findApartmentsByBlockName(blockName);
+			if(a.size() >= 1) {
+				return "WARN029";
+			}
 			for(var i:blockRepository.findAll()) {
 				if(i.getBlockName().toLowerCase().equals(blockName.toLowerCase())) {
+					
 					blockRepository.delete(i);
-					return "Blok silindi";
+					return "WARN026";
 				}
 			}
-			return "Böyle bir blok bulunamadı";
+			return "WARN027";
 		} catch(Exception e) {
 			return e.getMessage();
 		}
