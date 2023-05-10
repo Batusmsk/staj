@@ -47,6 +47,19 @@ public class TicketService {
 		return ticketRepository.findById(id);
 	}
 	
+	public boolean deleteTicketFromPerson(String email) {
+		List<TicketResponse> tickets = getPersonTickets(email);
+		for(var i:tickets) {
+			List<TicketMessageResponse> messages = getTicketMessages(i.getId(), email);
+			for(var m:messages) {
+				ticketMessageRepository.deleteById(m.getMessageId());
+			}
+			ticketRepository.deleteById(i.getId());
+			
+		}
+		return true;
+	}
+	
 	public Boolean sendMessage(MessageRequest request, String email) {
 		Boolean x = false;
 		
@@ -112,6 +125,7 @@ public class TicketService {
 		if(x || ticket.getPerson().getEmail().equals(email)) { 
 			for(var m:ticketMessageRepository.findByTicketId(id)) {
 				TicketMessageResponse response = new TicketMessageResponse();
+				response.setMessageId(m.getId());
 				response.setMessage(m.getMessage());
 				response.setPersonEmail(m.getPerson().getEmail());
 				response.setPersonLastName(m.getPerson().getLastName());

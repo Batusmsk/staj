@@ -1,12 +1,12 @@
 package com.example.batuhan.project.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.batuhan.project.dto.FeeDto;
+import com.example.batuhan.project.entity.Fee;
 import com.example.batuhan.project.locale.MyLocaleResolver;
 import com.example.batuhan.project.request_response.FeeRequest;
 import com.example.batuhan.project.service.FeeService;
@@ -33,7 +34,7 @@ public class FeeController {
 		return feeService.createFee(request);
 	}
 	@GetMapping(value = "/fee/findByPerson")
-	public List<FeeDto> findByPerson(@RequestParam String email) {
+	public List<Fee> findByPerson(@RequestParam String email) {
 		return feeService.findByPerson(email);
 	}
 	@GetMapping(value = "/fee/findByBlockNameAndApartmentNo")
@@ -44,6 +45,14 @@ public class FeeController {
 	public String payFee(HttpServletRequest request, @RequestParam Integer id) {
 		return messageSource.getMessage(feeService.payFee(id, 0), null, myLocaleResolver.resolveLocale(request));
 		
+	}
+	@GetMapping(value = "fee/getFee")
+	public Optional<Fee> getFee(@RequestParam Integer id) {
+		return feeService.getFee(id);
+	}
+	@GetMapping(value = "/fee/getFees")
+	public List<Fee> getFees(@RequestParam Integer status) {
+		return feeService.getFees(status);
 	}
 	@PutMapping(value = "/fee/payWithAmount", produces = "text/plain;charset=UTF-8")
 	public String amountWithPayment(HttpServletRequest request, @RequestParam Integer id, @RequestParam Integer amount) {

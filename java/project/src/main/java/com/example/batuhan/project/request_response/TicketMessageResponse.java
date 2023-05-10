@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class TicketMessageResponse {
 	
+	Integer messageId;
 	String message;
 	
 	String sendDate;

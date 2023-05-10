@@ -21,13 +21,13 @@ public class Apartment {
     
 	Integer floor;
 	Integer baseArea;
-	@JsonIgnore
+	
 	private String purchaseDate;
 	@Id
 	@OneToOne
     private Block block;
 	
-	@JsonIgnore
+	
 	private Integer personId;
 }
 

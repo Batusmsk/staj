@@ -7,10 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +15,14 @@ import com.example.batuhan.project.auth.TokenManager;
 import com.example.batuhan.project.auth.UserDetailsService;
 import com.example.batuhan.project.dto.PurchaseApartmentDto;
 import com.example.batuhan.project.entity.Apartment;
+import com.example.batuhan.project.entity.Fee;
 import com.example.batuhan.project.entity.Person;
 import com.example.batuhan.project.entity.PersonRole;
 import com.example.batuhan.project.repository.PersonRepository;
 import com.example.batuhan.project.request_response.FindOwnerResponse;
 import com.example.batuhan.project.request_response.RegisterRequest;
+import com.example.batuhan.project.request_response.RemoveApartmentToPersonRequest;
 import com.example.batuhan.project.request_response.UpdateProfileRequest;
-
-import io.jsonwebtoken.Jwts;
 
 @Service
 public class PersonService {
@@ -39,15 +36,16 @@ public class PersonService {
 	FeeService feeService;
 	@Autowired
 	UserDetailsService userDetailsService;
+	@Autowired
+	TicketService ticketService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private TokenManager tokenManager;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 	public String createPerson(RegisterRequest request) {
-		
+		if(personRepository.findByEmail(request.getEmail()).isPresent()) return "WARN030";
 		Set<PersonRole> roles = new HashSet<>();
 		roles.add(PersonRole.USER);
 		
@@ -55,13 +53,31 @@ public class PersonService {
 		person.setName(request.getName());
 		person.setLastName(request.getLastName());
 		person.setEmail(request.getEmail());
-		person.setPassword(passwordEncoder.encode(request.getPassword()));
+		//person.setPassword(passwordEncoder.encode(request.getPassword()));
 		person.setRoles(roles);
 		person.setPhoneNumber(request.getPhoneNumber());
 		personRepository.save(person);
+		
 		return "WARN010";
 	}
-
+	
+	public String deletePerson(Integer id) {
+		Optional<Person> person = personRepository.findById(id);
+		if(person.isPresent()) {
+			List<Fee> fee = feeService.findByPerson(person.get().getEmail());
+			if(fee.size() > 0) {
+				return "WARN032";
+			}
+			ticketService.deleteTicketFromPerson(person.get().getEmail());
+			removeRole(person.get().getEmail(), "admin");
+			removeRole(person.get().getEmail(), "user");
+			personRepository.delete(person.get());
+			return "WARN031";
+		} else {
+			return "WARN001";
+		}
+	}
+	
 	public String addRole(String mail, String role) {
 		Person person = findByEmail(mail).get();
 		Set<PersonRole> roles = person.getRoles();
@@ -157,31 +173,50 @@ public class PersonService {
 		}
 	}
 	
-	public String removeApartmentToPerson(String email, String blockName, Integer apartmentNo) {
-		if(!apartmentService.getApartment(blockName, apartmentNo).isPresent()) return "WARN002";
-		if(findByEmail(email).isPresent() == false) return "WARN001";
+	public String removeApartmentToPerson(RemoveApartmentToPersonRequest removeApartmentToPersonRequest) {
+		if(!apartmentService.getApartment(removeApartmentToPersonRequest.getBlockNo(), removeApartmentToPersonRequest.getApartmentNo()).isPresent()) return "WARN002";
+		if(findByEmail(removeApartmentToPersonRequest.getEmail()).isPresent() == false) return "WARN001";
 		
-		for(var i:feeService.findByPerson(email)) {
+		for(var i:feeService.findByPerson(removeApartmentToPersonRequest.getEmail())) {
 			if(i.getStatus() == true) {
 				return "WARN015";
 			}
 		}
 		
-		if(apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate() == null || apartmentService.getApartment(blockName, apartmentNo).get().getPurchaseDate().length() < 4) return "WARN016";
-		Optional<Apartment> apartment = apartmentService.getApartment(blockName, apartmentNo);
-		Optional<Person> person = findByEmail(email);
+		if(apartmentService.getApartment(removeApartmentToPersonRequest.getBlockNo(), removeApartmentToPersonRequest.getApartmentNo()).get().getPurchaseDate() == null || apartmentService.getApartment(removeApartmentToPersonRequest.getBlockNo(), removeApartmentToPersonRequest.getApartmentNo()).get().getPurchaseDate().length() < 4) return "WARN016";
+		Optional<Apartment> apartment = apartmentService.getApartment(removeApartmentToPersonRequest.getBlockNo(), removeApartmentToPersonRequest.getApartmentNo());
+		Optional<Person> person = findByEmail(removeApartmentToPersonRequest.getEmail());
+		
+		if(apartmentService.getApartment(removeApartmentToPersonRequest.getBlockNo(), removeApartmentToPersonRequest.getApartmentNo()).get().getPersonId() != findByEmail(removeApartmentToPersonRequest.getEmail()).get().getId()) {
+			return "WARN031";
+		}
+		
 		List<Apartment> list = person.get().getPersonApartments();
 		for(var i:list) {
-			if(i.getApartmentNo() == apartmentNo && i.getBlock().getBlockName().equals(blockName)) {
+			if(i.getApartmentNo() == removeApartmentToPersonRequest.getApartmentNo() && i.getBlock().getBlockName().equals(removeApartmentToPersonRequest.getBlockNo())) {
 				list.remove(i);
+				break;
+			} else {
+				continue;
 			}
 		}
 		person.get().setPersonApartments(list);
 		apartment.get().setPurchaseDate(null);
+		apartment.get().setPersonId(null);
+		
 		personRepository.save(person.get());
 		apartmentService.saveOrUpdateApartment(apartment.get());
 		
 		return "WARN017";
+	}
+	
+	public boolean resetPassword(Integer id) {
+		System.out.println(id.toString());
+		if(!personRepository.findById(id).isPresent()) return false;
+		Person person = personRepository.findById(id).get();
+		person.setPassword(null);
+		personRepository.save(person);
+		return true;
 	}
 	
 	public String updateEmailAndNumber(UpdateProfileRequest request, String userEmail) {

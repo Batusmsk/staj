@@ -31,7 +31,6 @@ public class Person {
 	private String email;
 	@JsonIgnore
 	private String password;
-	
 	private String phoneNumber;
 	private String name;
 	private String lastName;

@@ -164,10 +164,12 @@ ul {
 .hide {
     display: none;
 }
+
+
 .table-style {
   overflow: auto;
-  max-height: 70vh;
-  min-height: 70vh;
+  max-height: 60vh;
+  min-height: 60vh;
   min-width: 1px;
   overflow-x: hidden;
 }
@@ -260,11 +262,13 @@ table.GeneratedTable a {
 }
 
 .slide-menu2 {
+    position: absolute;
     float: left;
     width: 15vh;
     display: flex;
+    left: 10%;
     flex-direction: column;
-    background-color:rgba(125, 111, 247, 0.9);
+    background-color:rgba(125, 111, 247, 0.7);
     text-align: center;
 }
 .slide-menu2 li a {
@@ -302,6 +306,10 @@ table.GeneratedTable a {
     color: red;
     font-size: 25px;
 }
+.fa-unlock {
+    color: rgb(74, 83, 252);
+    font-size: 20px;
+}
 .search {
     margin-bottom: 10px;
     
@@ -335,6 +343,33 @@ table.GeneratedTable a {
     margin-left: 20vh;
     width: 50%;
 }
+
+
+.createPerson ul{
+    display: flex;
+}
+.createPerson ul li{
+    display: flex;
+    letter-spacing: 1px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.createPerson ul li h3{
+color:black;
+}
+.createApartment ul{
+    display: flex;
+}
+.createApartment ul li{
+    display: flex;
+    letter-spacing: 1px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.createApartment ul li h3{
+color:black;
+}
+
 .createBlock ul{
     display: flex;
 }
@@ -347,6 +382,33 @@ table.GeneratedTable a {
 .createBlock ul li h3{
 color:black;
 }
+.notFound {
+    margin-top: 25px;
+}
+
+.person-info {
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.person-info h3{
+    font-family: var(--secondary-font);
+    font-size: 15px;
+    color: black;
+    padding-top: 5px;
+}
+.fa-arrow-left-long {
+    float: right;
+    font-size: 25px;
+    color: red;
+    transition: var(--general-transition);
+}
+.fa-arrow-left-long:hover {
+    color: black;
+    
+}
 
 footer {
     position: absolute;
@@ -355,3 +417,59 @@ footer {
     background-color: rgba(125, 111, 247, 0.9);
     height: 4rem;
 }
+
+#form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(128, 128, 128, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+  }
+
+  #form-container input[type="text"], input[type="tel"], input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;      
+  }
+
+
+  #form-container2 {
+    position: relative;
+    left: 40%;
+    width: 20%;
+
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+  }
+
+  #form-container2 input[type="text"], input[type="tel"], input[type="email"] {
+    width: 100%;
+
+    margin-bottom: 10px;
+    box-sizing: border-box;      
+  }
+
+.fee-list {
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding-bottom: 15px;
+}
+

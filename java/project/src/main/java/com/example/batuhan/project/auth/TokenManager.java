@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 public class TokenManager {
 	
 	private static final String secretKey = "batuhanSmsk";
-	private static final Integer validity = 5 * 60 * 1000;
+	private static final Integer validity = 5 * 60 * 10000;
 	Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	
 	@Autowired

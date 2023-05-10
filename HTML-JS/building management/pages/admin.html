@@ -47,53 +47,48 @@
             <div class="slide-menu2">
                 <div class="person hide">
                     <ul>
-                        <li><a href="#" onClick="selection(`person`)">Kullanıcı Profil İşlemleri</a></li>
-                        <li><a href="#" onClick="selection(`createPerson`)">Kullanıcı Oluştur</a></li>
-                        <li><a href="#" onClick="selection(`deletePerson`)">Kullanıcı Sil</a></li>
-                        <li><a href="#" onClick="selection(`searchPerson`)">Kullanıcı Ara</a></li>
-                        <li><a href="#" onClick="selection(`addApartmentToPerson`)">Kullanıcı'ya Daire Ekle</a></li>
-                        <li><a href="#" onClick="selection(`removeApartmentToPerson`)">Kullanıcı'yı daire'den çıkar</a>
+                        <li><a href="#" onClick="createPersonSection()">Kullanıcı Oluştur</a></li>
+                        <li><a href="#" onClick="personSearch()">Kullanıcı Listesi</a></li>
+                        <li><a href="#" onClick="addPersonToApartment()">Kullanıcı'ya Daire Ekle</a></li>
+                        <li><a href="#" onClick="removePersonToApartment()">Kullanıcı'yı daire'den çıkar</a>
                         </li>
                     </ul>
                 </div>
                 <div class="apartment hide">
                     <ul>
-                        <li><a href="#">Apartman Oluştur</a></li>
-                        <li><a href="#">Apartman Sil</a></li>
-                        <li><a href="#">Apartman Ara</a></li>
+                        <li><a onClick="createApartment()" href="#">Apartman Oluştur</a></li>
+                        <li><a onClick="searchApartment()" href="#">Apartman Listesi</a></li>
                     </ul>
                 </div>
                 <div class="fee hide">
                     <ul>
-                        <li><a href="#">Aidat Oluştur</a></li>
-                        <li><a href="#">Aidat Sil</a></li>
-                        <li><a href="#">Aidat Ara</a></li>
+                        <li><a onClick="feeList(2)" href="#">Aidat Listesi</a></li>
+                        <li><a onClick="payList()" href="#">Ödeme Listesi</a></li>                    
                     </ul>
                 </div>
                 <div class="block hide">
                     <ul>
                         <li><a href="#" onClick="createBlock()">Blok Oluştur</a></li>
-                        <li><a href="#" onClick="searchBlock()">Blok Sil</a></li>
-                        <li><a href="#" onClick="searchBlock()">Blok Ara</a></li>
+                        <li><a href="#" onClick="searchBlock()">Blok Listesi</a></li>
                     </ul>
                 </div>
             </div>
             <div id="management" class="management">
                 <div id="selection-management" class="selection-management">
-                    
-                </div>
-                <div id="person-management" class="person-management">
-                    
+                   
                 </div>
             </div>
         </div>
 
     </div>
 
-
+    
     <script src="../script/admin.js"></script>
     <script src="../script/fnon.min.js"></script>
     <script src="../script/adminSelection/block.js"></script>
+    <script src="../script/adminSelection/apartment.js"></script>
+    <script src="../script/adminSelection/person.js"></script>
+    <script src="../script/adminSelection/fee.js"></script>
 </body>
 
 <footer>

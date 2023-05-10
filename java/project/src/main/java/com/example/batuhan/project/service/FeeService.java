@@ -23,7 +23,7 @@ public class FeeService {
 
 	@Value("${fee}")
 	private Integer fee;
-	
+
 	@Autowired
 	PersonService personService;
 	@Autowired
@@ -44,7 +44,9 @@ public class FeeService {
 
 		if (!apartmentService.getApartment(request.getBlockName(), request.getApartmentNo()).isPresent())
 			return "WARN001";
-		if (!personService.findByEmail(personService.findOwnerTheApartment(request.getBlockName(), request.getApartmentNo()).getEmail()).isPresent())
+		if (!personService.findByEmail(
+				personService.findOwnerTheApartment(request.getBlockName(), request.getApartmentNo()).getEmail())
+				.isPresent())
 			return "WARN003.";
 		Optional<Apartment> apartment = apartmentService.getApartment(request.getBlockName(), request.getApartmentNo());
 		Integer feeAmount = fee * (apartment.get().getBaseArea());
@@ -61,30 +63,52 @@ public class FeeService {
 		return "WARN004";
 	}
 
-	public List<Fee> getFees() {
-		return feeRepository.findAll();
+	public List<Fee> getFees(Integer status) {
+
+		List<Fee> list = new ArrayList<>();
+
+		if (status == 1) {
+			for (var i : feeRepository.findAll()) {
+				if (i.getStatus() == false) {
+					list.add(i);
+				}
+			}
+
+			for (var i : feeRepository.findAll()) {
+				if (i.getStatus() == true) {
+					list.add(i);
+				}
+			}
+		} else if (status == 2) {
+			for (var i : feeRepository.findAll()) {
+				if (i.getStatus() == true) {
+					list.add(i);
+				}
+			}
+
+			for (var i : feeRepository.findAll()) {
+				if (i.getStatus() == false) {
+					list.add(i);
+				}
+			}
+		} else {
+			list = feeRepository.findAll();
+		}
+
+		return list;
 	}
 
 	public Optional<Fee> getFee(Integer id) {
 		return feeRepository.findById(id);
 	}
 
-	public List<FeeDto> findByPerson(String email) {
+	public List<Fee> findByPerson(String email) {
 		if (!personService.findByEmail(email).isPresent())
 			return null;
-		List<FeeDto> list = new ArrayList<>();
-		for (var i : getFees()) {
+		List<Fee> list = new ArrayList<>();
+		for (var i : getFees(0)) {
 			if (i.getPerson().getEmail().equals(email)) {
-				FeeDto feeDto = new FeeDto();
-				feeDto.setId(i.getId());
-				feeDto.setApartmentNo(i.getApartment());
-				feeDto.setBlockName(i.getBlockNo());
-				feeDto.setEmail(email);
-				feeDto.setFeeDate(i.getFeeDate());
-				feeDto.setPaidAmount(i.getPaidAmount());
-				feeDto.setFeeAmount(i.getFeeAmount());
-				feeDto.setStatus(i.getStatus());
-				list.add(feeDto);
+				list.add(i);
 			}
 		}
 		return list;
@@ -106,7 +130,7 @@ public class FeeService {
 		}
 		return list;
 	}
-	
+
 	public String payFee(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
 			return "WARN006";
@@ -114,9 +138,9 @@ public class FeeService {
 			return "WARN006";
 
 		Optional<Fee> fee = getFee(id);
-		
+
 		var xxx = amount == 0 ? fee.get().getFeeAmount() : amount;
-		
+
 		var payment = paymentService.createPayment(id, fee.get().getPerson().getEmail(), xxx);
 		if (payment == false)
 			return "WARN";
@@ -125,55 +149,58 @@ public class FeeService {
 		feeRepository.save(fee.get());
 		return "WARN007";
 	}
-    public long topla(long a,long b){
-        return a+b;
-     }
+
+	public long topla(long a, long b) {
+		return a + b;
+	}
+
 	public String amountWithPayment(Integer id, Integer amount) {
 		if (!getFee(id).isPresent())
 			return "WARN005";
 		if (getFee(id).get().getStatus() == false)
 			return "WARN006";
 		Fee fee = getFee(id).get();
-		if(!fee.getStatus()) return "WARN006";
-		
-		if(amount >= (fee.getFeeAmount() - fee.getPaidAmount())) {
-			
-			if(amount > (fee.getFeeAmount() - fee.getPaidAmount())) return "WARN009";
-					
+		if (!fee.getStatus())
+			return "WARN006";
+
+		if (amount >= (fee.getFeeAmount() - fee.getPaidAmount())) {
+
+			if (amount > (fee.getFeeAmount() - fee.getPaidAmount()))
+				return "WARN009";
+
 			return payFee(id, amount);
-		} 
-		
-		
+		}
+
 		fee.setPaidAmount(fee.getPaidAmount() + amount);
-		if( fee.getFeeAmount() <= fee.getPaidAmount()) {
+		if (fee.getFeeAmount() <= fee.getPaidAmount()) {
 			fee.setStatus(false);
 		}
-		
+
 		var payment = paymentService.createPayment(id, fee.getPerson().getEmail(), amount);
 		if (payment == false)
 			return "WARN";
 		feeRepository.save(fee);
 		return "WARN007";
-	
+
 	}
-	
-	@Scheduled(cron = "0 1 * ? * *")
+
+	@Scheduled(cron = "0 */10 * ? * *")
 	public boolean addFeeForAllPerson() {
-    	Integer person = 0;
-    	Integer apartment = 0;
-    	for(var p:personService.getPersons()) {
-    		person++;
-    		for(var a:personService.findApartmentsByPerson(p.getEmail())) {
-    			apartment++;
-    			FeeRequest request = new FeeRequest();
-    			request.setApartmentNo(a.getApartmentNo());
-    			request.setBlockName(a.getBlock().getBlockName());
-    			request.setEmail(p.getEmail());
-    			createFee(request);
-    		}
-    	}
-        
-        return true;
+		Integer person = 0;
+		Integer apartment = 0;
+		for (var p : personService.getPersons()) {
+			person++;
+			for (var a : personService.findApartmentsByPerson(p.getEmail())) {
+				apartment++;
+				FeeRequest request = new FeeRequest();
+				request.setApartmentNo(a.getApartmentNo());
+				request.setBlockName(a.getBlock().getBlockName());
+				request.setEmail(p.getEmail());
+				createFee(request);
+			}
+		}
+
+		return true;
 	}
 
 }

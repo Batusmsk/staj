@@ -66,6 +66,7 @@ public class PaymentService {
 		response.setPersonEmail(i.getPerson().getEmail());
 		return response;
 	}
+	
 	public List<PaymentResponse> getPayments() {
 		List<PaymentResponse> list = new ArrayList<>();
 		for(var i:paymentRepository.findAll()) {

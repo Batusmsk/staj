@@ -6,7 +6,6 @@ async function createBlockButton() {
     if (blockNo.length >= 1 && blockFloor.length >= 1 && blockBaseArea.length >= 1) {
         let block = { "blockName": blockNo, "numberOfFloors": blockFloor, "baseArea": blockBaseArea };
         let request = await requestBody("http://my.batuhan.com:8080/admin/block/createBlock", block);
-
     } else {
         Fnon.Hint.Danger("Gerekli olan tüm bilgileri doldurunuz", " ");
     }
@@ -23,7 +22,7 @@ async function deleteBlock(blockName) {
     searchBlock();
 }
 
-searchBlock();
+//searchBlock();
 async function searchBlockText() {
     
     let input = document.getElementById("searchInput").value;  
@@ -88,26 +87,23 @@ async function createBlock() {
     let div = document.getElementById("selection-management");
     let html = `
     <div class="createBlock">
-    <ul>
-        <li>
-            <h3>Blok Numarası: </h3>
-        </li>
-        <li><input id="blockNo"></li>
-    </ul>
-    <ul>
-        <li>
-            <h3>Kat Sayısı: </h3>
-        </li>
-        <li><input id="blockFloor"></li>
-    </ul>
-    <ul>
-        <li>
-            <h3>Toplam Metre Kare: </h3>
-        </li>
-        <li><input id="blockBaseArea"></li>
-    </ul>
-    <button onClick="createBlockButton()" class="button">Kayıt Et</button>
-</div>
+
+
+    <div id="form-container">
+    <form>
+      <label>Blok Numarası:</label>
+      <input type="text" id="blockNo" required>
+
+      <label>Kat Sayısı:</label>
+      <input type="text" id="blockFloor" required>
+
+      <label>Blok Metre Kare</label>
+      <input type="text" id="blockBaseArea" required>
+
+      <button onClick="createBlockButton()" class="button">Kayıt</button>
+    </form>
+  </div>
+
     `;
     div.innerHTML = html;
     category();
@@ -183,10 +179,11 @@ async function requestBody(url, data) {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader('Authorization', `Bearer ${bearerToken}`);
 
-        let successMessages = ["başarı", "oluşturuldu"];
+        let successMessages = ["başarı", "oluşturuldu", "true", "success"];
 
         xhr.onreadystatechange = async function () {
             if (xhr.readyState === 4) {
+                
                 if (!url.includes("sendMessage")) {
                     let x = false;
 
@@ -198,7 +195,8 @@ async function requestBody(url, data) {
                     }
 
                     if (x) {
-                        Fnon.Hint.Success(xhr.responseText);
+                        alert(xhr.responseText);
+                        
                     } else {
                         Fnon.Hint.Danger(xhr.responseText, "Bir hata oluştu");
                     }

@@ -15,7 +15,15 @@ async function loginControl() {
     if (status == "false") {
       document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       window.location.href = "http://my.batuhan.com:5500/pages/login.html";
+    } else {
+      let token = await fetchCookie("token");
+      let userE = await fetchData(`http://my.batuhan.com:8080/user/getEmail?token=${token}`);
+      let url = `http://my.batuhan.com:8080/person/getPerson/${userE}`;
+      const person = await makeApiCall(url);
 
+      if(!person.roles.includes("ADMIN")) {
+        window.location.href = "http://my.batuhan.com:5500/pages/user.html";
+    }
     }
   } else {
     window.location.href = "http://my.batuhan.com:5500/pages/login.html";
@@ -40,6 +48,7 @@ async function user() {
   userLastname = person.lastName;
   userPhoneNumber = person.phoneNumber;
   roles = person.roles;
+  
   document.getElementById("logo").innerText = "Hoşgeldin " + userName + " " + userLastname;
   
   return Promise.resolve();
@@ -111,8 +120,8 @@ async function makeApiCall(url, method) {
   });
 
   if (!response.ok) {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.location.href = "http://my.batuhan.com:5500/pages/login.html";
+    //document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    //window.location.href = "http://my.batuhan.com:5500/pages/login.html";
     Fnon.Hint.Danger('Sunucu bağlantısı kurulamadı!', 'Bağlantı Hatası');
     throw new Error(`HTTP error! status: ${response.status}`);
   }

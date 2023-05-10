@@ -55,6 +55,10 @@ public class TicketController {
 		
 		return ticketService.sendMessage(messageRequest, email);
 	}
+	@GetMapping(value = "ticket/deleteTicketFromPerson")
+	public boolean deleteTicketFromPerson(@RequestParam String email) {
+		return ticketService.deleteTicketFromPerson(email);
+	}
 	@GetMapping(value = "/ticket/findByPersonTickets") 
 	public List<TicketResponse> findByPersonTickets(@RequestParam String email) {
 		return ticketService.getPersonTickets(email);

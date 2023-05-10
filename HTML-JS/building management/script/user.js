@@ -26,6 +26,11 @@ async function loginControl() {
 
 }
 
+async function logout() {
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  window.location.href = "http://my.batuhan.com:5500/pages/login.html";
+}
+
 async function user() {
   let token = await fetchCookie("token");
   let userE = await fetchData(`http://my.batuhan.com:8080/user/getEmail?token=${token}`);

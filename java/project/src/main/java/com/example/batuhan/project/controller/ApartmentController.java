@@ -49,7 +49,7 @@ public class ApartmentController {
 	public List<ApartmentDto> findApartmentsByBlockName(@RequestParam String blockName) {
 		return apartmentService.findApartmentsByBlockName(blockName.toUpperCase());
 	}
-	@DeleteMapping(value = "/apartment/delete")
+	@GetMapping(value = "/apartment/delete")
 	public String deleteApartment(@RequestParam String blockName, @RequestParam Integer apartmentId) {
 		return apartmentService.deleteApartment(blockName.toUpperCase(), apartmentId);
 	}
