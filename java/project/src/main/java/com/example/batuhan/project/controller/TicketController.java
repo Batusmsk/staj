@@ -73,6 +73,10 @@ public class TicketController {
 	public Ticket getTicket(@RequestParam Integer id) {
 		return ticketService.getTicket(id).get();
 	}
+	@GetMapping(value = "/ticket/closeTicket")
+	public Boolean closeTicket(@RequestParam Integer id) {
+		return ticketService.closeTicket(id);
+	}
 	
 
 }

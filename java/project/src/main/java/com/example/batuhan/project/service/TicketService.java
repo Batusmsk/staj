@@ -60,6 +60,15 @@ public class TicketService {
 		return true;
 	}
 	
+	public Boolean closeTicket(Integer id) {
+		if(!getTicket(id).isPresent()) return false;
+		Ticket ticket = getTicket(id).get();
+		if(!ticket.getStatus()) return false;
+		ticket.setStatus(false);
+		ticketRepository.save(ticket);
+		return true;
+		
+	}
 	public Boolean sendMessage(MessageRequest request, String email) {
 		Boolean x = false;
 		
@@ -73,6 +82,7 @@ public class TicketService {
 		}
 		
 		if(x || getTicket(request.getTicketId()).get().getPerson().getEmail().equals(email) ) {
+			if(getTicket(request.getTicketId()).get().getStatus() == false) return false;
 			Date date = new Date();
 			SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
 			SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
